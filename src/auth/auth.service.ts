@@ -12,18 +12,25 @@ export class AuthService {
     }
 
     async signUp(user: User): Promise<Tokens> {
+        try {
         user.password = await this.hashData(user.password);
         const newUser = await this.userService.saveUser(user)
 
-        const tokens = await this.getTokens(newUser.id, newUser.email);
+        const tokens = await this.getTokens(newUser);
 
         await this.updateRtHash(newUser.id, tokens.refresh_token);
 
         return tokens;
+        } catch (e) {
+            throw new ForbiddenException("Register Error")
+        }
+        
     }
 
     async signIn(user: User): Promise<Tokens> {
         const findedUser = await this.userService.findUserByEmail(user.email);
+
+        console.log(findedUser, 'user')
 
         if (!findedUser) throw new ForbiddenException("Access Denied")
 
@@ -31,7 +38,7 @@ export class AuthService {
 
         if (!verify) throw  new UnauthorizedException("Incorrect Password")
 
-        const tokens = await this.getTokens(findedUser.id, findedUser.email);
+        const tokens = await this.getTokens(findedUser);
 
         await this.updateRtHash(findedUser.id, tokens.refresh_token);
 
@@ -48,7 +55,7 @@ export class AuthService {
 
         if (!verify) throw  new UnauthorizedException("Incorrect Password")
 
-        const tokens = await this.getTokens(user.id, user.email);
+        const tokens = await this.getTokens(user);
 
         await this.updateRtHash(user.id, tokens.refresh_token);
 
@@ -69,20 +76,21 @@ export class AuthService {
         return user;
     }
 
-    async getTokens(userId: number, email: string): Promise<Tokens> {
+    async getTokens(user: User): Promise<Tokens> {
         const [at, rt] = await Promise.all([
             this.jwtService.signAsync({
-                sub: userId,
-                email,
+                sub: user.id,
+                email: user.email,
+                role: user.role,
             }, {
                 expiresIn: 60 * 15,
                 secret: 'secret_key_access'
             }),
             this.jwtService.signAsync({
-                sub: userId,
-                email,
+                sub: user.id,
+                email: user.email,
             }, {
-                expiresIn: 60 * 15,
+                expiresIn: 60 * 60 * 24,
                 secret: 'secret_key'
             })
         ]);

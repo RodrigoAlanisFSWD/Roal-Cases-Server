@@ -6,8 +6,6 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @IsNotEmpty()
-    @IsString()
     @Column()
     name: string;
 
@@ -27,4 +25,7 @@ export class User {
 
     @Column({ unique: true, nullable: true })
     hashedRt: string;
+
+    @Column({ default: "USER" })
+    role: string;
 }

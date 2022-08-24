@@ -14,6 +14,8 @@ export class UserService {
     async saveUser(user: User) {
         const newUser = await this.userRepo.create(user)
 
+        newUser.role = 'USER';
+
         return this.userRepo.save(newUser)
     }
 
