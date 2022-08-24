@@ -2,8 +2,6 @@ import {Body, Controller, Get, HttpCode, HttpStatus, Post, Req, UseGuards} from 
 import {AuthService} from "./auth.service";
 import {User} from "./user/user.entity";
 import {Tokens} from "../common/types/auth";
-import {AuthGuard} from "@nestjs/passport";
-import {Request} from "express";
 import {AtGuard, RtGuard} from "../common/guards";
 import {GetCurrentUser} from "../common/decorators";
 
@@ -34,6 +32,7 @@ export class AuthController {
     @Post("/refresh")
     @HttpCode(HttpStatus.OK)
     refreshToken(@GetCurrentUser() user: any) {
+        console.log(user)
         return this.authService.refreshToken(user['sub'], user['refreshToken']);
     }
 

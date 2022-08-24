@@ -6,8 +6,6 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @IsNotEmpty()
-    @IsString()
     @Column()
     name: string;
 

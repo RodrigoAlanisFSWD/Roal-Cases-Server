@@ -4,6 +4,7 @@ import {UserService} from "./user/user.service";
 import * as bcrypt from 'bcrypt';
 import {Tokens} from "../common/types/auth";
 import {JwtService} from "@nestjs/jwt";
+import {find} from 'rxjs';
 
 @Injectable()
 export class AuthService {
@@ -12,6 +13,7 @@ export class AuthService {
     }
 
     async signUp(user: User): Promise<Tokens> {
+        try {
         user.password = await this.hashData(user.password);
         const newUser = await this.userService.saveUser(user)
 
@@ -20,10 +22,16 @@ export class AuthService {
         await this.updateRtHash(newUser.id, tokens.refresh_token);
 
         return tokens;
+        } catch (e) {
+            throw new ForbiddenException("Register Error")
+        }
+        
     }
 
     async signIn(user: User): Promise<Tokens> {
         const findedUser = await this.userService.findUserByEmail(user.email);
+
+        console.log(findedUser, 'user')
 
         if (!findedUser) throw new ForbiddenException("Access Denied")
 
@@ -82,7 +90,7 @@ export class AuthService {
                 sub: userId,
                 email,
             }, {
-                expiresIn: 60 * 15,
+                expiresIn: 60 * 60 * 24,
                 secret: 'secret_key'
             })
         ]);
