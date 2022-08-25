@@ -25,4 +25,7 @@ export class User {
 
     @Column({ unique: true, nullable: true })
     hashedRt: string;
+
+    @Column({ default: "USER" })
+    role: string;
 }
