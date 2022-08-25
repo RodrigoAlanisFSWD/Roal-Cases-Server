@@ -4,6 +4,7 @@ import {UserService} from "./user/user.service";
 import * as bcrypt from 'bcrypt';
 import {Tokens} from "../common/types/auth";
 import {JwtService} from "@nestjs/jwt";
+import {find} from 'rxjs';
 
 @Injectable()
 export class AuthService {
