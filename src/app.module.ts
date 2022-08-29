@@ -6,7 +6,10 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import { ConfigModule } from '@nestjs/config';
 import {User} from "./auth/user/user.entity";
 import { ProductsModule } from './products/products.module';
-import { CategoriesController } from './products/categories.controller';
+import {Product} from "./products/product/product.entity";
+import {Category} from "./products/category/category.entity";
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [AuthModule,
@@ -17,13 +20,23 @@ import { CategoriesController } from './products/categories.controller';
       username: 'postgres',
       password: 'postgres',
       database: 'roal_cases',
-      entities: [User],
+      entities: [User, Product, Category],
       synchronize: true
     }),
       ConfigModule.forRoot(),
-      ProductsModule
+      ProductsModule,
+      ServeStaticModule.forRoot({
+        rootPath: './public/img/categories',
+        serveRoot: '/files/categories',
+        exclude: ['/api*']
+      }),
+      ServeStaticModule.forRoot({
+        rootPath: './public/img/products',
+        serveRoot: '/files/products',
+        exclude: ['/api*']
+      })
   ],
-  controllers: [AppController, CategoriesController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

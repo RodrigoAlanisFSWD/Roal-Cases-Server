@@ -1,0 +1,32 @@
+POST http://localhost:8080/api/categories/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcxNDQxMiwiZXhwIjoxNjYxNzE1MzEyfQ.UMsfqD9zml6yuk2rnDedbTviU4R_kHo-2EeE5_Y7beE
+
+{
+  "name": "Phone Cases",
+  "description": "Beautiful Cases For Android And IOS Phones",
+  "price": 200
+}
+
+###
+GET http://localhost:8080/api/categories/
+
+###
+GET http://localhost:8080/api/categories/3
+
+###
+PUT http://localhost:8080/api/categories/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcxNDQxMiwiZXhwIjoxNjYxNzE1MzEyfQ.UMsfqD9zml6yuk2rnDedbTviU4R_kHo-2EeE5_Y7beE
+
+{
+    "id": 3,
+    "name": "Phone Cases Updated",
+    "description": "Beautiful Cases For Android And IOS Phones",
+    "imageUrl": null,
+    "price": 200
+  }
+
+###
+DELETE http://localhost:8080/api/categories/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcxNDQxMiwiZXhwIjoxNjYxNzE1MzEyfQ.UMsfqD9zml6yuk2rnDedbTviU4R_kHo-2EeE5_Y7beE
