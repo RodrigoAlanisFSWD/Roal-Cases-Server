@@ -4,12 +4,17 @@ import {UserService} from "./user/user.service";
 import * as bcrypt from 'bcrypt';
 import {Tokens} from "../common/types/auth";
 import {JwtService} from "@nestjs/jwt";
-import {find} from 'rxjs';
+import { randomBytes } from 'node:crypto';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AuthService {
 
-    constructor(private userService: UserService, private jwtService: JwtService) {
+    constructor(
+        private userService: UserService, 
+        private jwtService: JwtService,
+        private mailService: MailService
+        ) {
     }
 
     async signUp(user: User): Promise<Tokens> {
@@ -20,6 +25,8 @@ export class AuthService {
         const tokens = await this.getTokens(newUser);
 
         await this.updateRtHash(newUser.id, tokens.refresh_token);
+
+        await this.sendEmailConfirmation(newUser);
 
         return tokens;
         } catch (e) {
@@ -80,6 +87,7 @@ export class AuthService {
                 sub: user.id,
                 email: user.email,
                 role: user.role,
+                mail_confirmed: user.mail_confirmed
             }, {
                 expiresIn: 60 * 15,
                 secret: 'secret_key_access'
@@ -111,5 +119,15 @@ export class AuthService {
 
     hashData(data: string) {
         return bcrypt.hash(data, 10);
+    }
+
+    async sendEmailConfirmation(user: User) {
+        const code = randomBytes(6).toString('base64')
+
+        user.mail_confirmation_code = await this.hashData(code);
+
+        await this.userService.updateUser(user);
+
+        await this.mailService.sendEmailConfirmation(user, code)
     }
 }

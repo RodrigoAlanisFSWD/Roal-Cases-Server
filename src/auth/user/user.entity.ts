@@ -28,4 +28,10 @@ export class User {
 
     @Column({ default: "USER" })
     role: string;
+
+    @Column({ default: false })
+    mail_confirmed: boolean;
+
+    @Column({ nullable: true })
+    mail_confirmation_code: string;
 }
