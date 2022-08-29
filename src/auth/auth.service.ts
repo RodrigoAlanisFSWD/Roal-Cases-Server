@@ -31,8 +31,6 @@ export class AuthService {
     async signIn(user: User): Promise<Tokens> {
         const findedUser = await this.userService.findUserByEmail(user.email);
 
-        console.log(findedUser, 'user')
-
         if (!findedUser) throw new ForbiddenException("Access Denied")
 
         const verify = await bcrypt.compare(user.password, findedUser.password)
@@ -47,7 +45,6 @@ export class AuthService {
     }
 
     async refreshToken(userId: number, rt: string) {
-        console.log(rt, userId)
         const user = await this.userService.findUserById(userId);
 
         if (!user) throw new ForbiddenException("Access Denied")
@@ -106,8 +103,6 @@ export class AuthService {
         const hash = await this.hashData(rt);
 
         const user = await this.userService.findUserById(userId);
-
-        console.log(user)
 
         user.hashedRt = hash;
 

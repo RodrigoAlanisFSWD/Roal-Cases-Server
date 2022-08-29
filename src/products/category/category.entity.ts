@@ -1,0 +1,32 @@
+import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import {Product} from "../product/product.entity";
+import {IsInt, IsNotEmpty, IsString} from "class-validator";
+
+@Entity()
+export class Category {
+    @PrimaryGeneratedColumn()
+    id: number;
+
+    @IsNotEmpty()
+    @IsString()
+    @Column()
+    name: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @Column()
+    description: string;
+
+    @Column({
+        nullable: true
+    })
+    imageUrl: string;
+
+    @IsNotEmpty()
+    @IsInt()
+    @Column()
+    price: number;
+
+    @OneToMany(() => Product, (product) => product.category)
+    products: Product[];
+}

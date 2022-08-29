@@ -32,7 +32,6 @@ export class AuthController {
     @Post("/refresh")
     @HttpCode(HttpStatus.OK)
     refreshToken(@GetCurrentUser() user: any) {
-        console.log(user)
         return this.authService.refreshToken(user['sub'], user['refreshToken']);
     }
 

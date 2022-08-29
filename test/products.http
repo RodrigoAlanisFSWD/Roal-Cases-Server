@@ -1,0 +1,30 @@
+POST http://localhost:8080/api/products/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
+
+{
+  "name": "Blue Case",
+  "description": "Beautiful Deep Blue Case"
+}
+
+###
+GET http://localhost:8080/api/products/
+
+###
+GET http://localhost:8080/api/products/3
+
+###
+PUT http://localhost:8080/api/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
+
+{
+    "id": 3,
+    "name": "Blue Case Updated",
+    "description": "Beautiful Deep Blue Case",
+    "imageUrl": null
+  }
+
+###
+DELETE http://localhost:8080/api/products/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
