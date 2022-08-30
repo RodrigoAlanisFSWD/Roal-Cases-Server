@@ -26,10 +26,9 @@ export class AuthService {
 
         await this.updateRtHash(newUser.id, tokens.refresh_token);
 
-        await this.sendEmailConfirmation(newUser);
-
         return tokens;
         } catch (e) {
+            console.log(e)
             throw new ForbiddenException("Register Error")
         }
         
@@ -81,6 +80,35 @@ export class AuthService {
         return user;
     }
 
+    async confirmEmail(code: string, userId: number): Promise<Tokens> {
+        const user = await this.userService.findUserById(userId);
+
+        const verify = bcrypt.compare(code, user.mail_confirmation_code)
+
+        if (!verify) {
+            throw new ForbiddenException("Email Code Are Invalid")
+        }
+
+        user.mail_confirmed = true;
+        user.mail_confirmation_code = null;
+
+        await this.userService.updateUser(user);
+
+        const tokens = await this.getTokens(user);
+
+        await this.updateRtHash(user.id, tokens.refresh_token);
+
+        return tokens;
+    }
+
+    async sendConfirmation(userId: number) {
+        const user = await this.userService.findUserById(userId);
+
+        await this.sendEmailConfirmation(user);
+
+        return;
+    }
+
     async getTokens(user: User): Promise<Tokens> {
         const [at, rt] = await Promise.all([
             this.jwtService.signAsync({
@@ -123,6 +151,8 @@ export class AuthService {
 
     async sendEmailConfirmation(user: User) {
         const code = randomBytes(6).toString('base64')
+
+        console.log(code)
 
         user.mail_confirmation_code = await this.hashData(code);
 

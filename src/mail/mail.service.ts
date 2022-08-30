@@ -7,14 +7,19 @@ export class MailService {
     constructor(private mailerService: MailerService) {}
 
     async sendEmailConfirmation(user: User, code: string) {
-        await this.mailerService.sendMail({
-            to: user.email,
-            subject: 'Welcome To Roal Cases! Confirm Your Email',
-            template: './confirmation',
-            context: {
-                name: user.name,
-                code,
-            }
-        })
+        try {
+            await this.mailerService.sendMail({
+                to: user.email,
+                subject: 'Welcome To Roal Cases! Confirm Your Email',
+                template: './confirmation',
+                context: {
+                    name: user.name,
+                    code,
+                }
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 }
