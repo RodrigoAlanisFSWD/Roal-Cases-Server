@@ -36,7 +36,7 @@ export class AuthController {
         return this.authService.refreshToken(user['sub'], user['refreshToken']);
     }
 
-    @UseGuards(AtGuard, MailGuard)
+    @UseGuards(AtGuard)
     @Get("/profile")
     @HttpCode(HttpStatus.OK)
     getProfile(@GetCurrentUser('sub') userId: number): Promise<User> {

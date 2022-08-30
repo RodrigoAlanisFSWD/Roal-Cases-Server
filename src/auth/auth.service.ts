@@ -6,6 +6,7 @@ import {Tokens} from "../common/types/auth";
 import {JwtService} from "@nestjs/jwt";
 import { randomBytes } from 'node:crypto';
 import { MailService } from 'src/mail/mail.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +14,8 @@ export class AuthService {
     constructor(
         private userService: UserService, 
         private jwtService: JwtService,
-        private mailService: MailService
+        private mailService: MailService,
+        private config: ConfigService
         ) {
     }
 
@@ -118,14 +120,14 @@ export class AuthService {
                 mail_confirmed: user.mail_confirmed
             }, {
                 expiresIn: 60 * 15,
-                secret: 'secret_key_access'
+                secret: this.config.get('ACCESS_TOKEN_KEY')
             }),
             this.jwtService.signAsync({
                 sub: user.id,
                 email: user.email,
             }, {
                 expiresIn: 60 * 60 * 24,
-                secret: 'secret_key'
+                secret: this.config.get('REFRESH_TOKEN_KEY')
             })
         ]);
 
