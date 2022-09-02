@@ -151,8 +151,20 @@ export class AuthService {
         return bcrypt.hash(data, 10);
     }
 
+    makeCode(length: number) {
+        let res = '';
+        let chars = 'ABCDEFGHIJKLMNOPQRSTXYZW0123456789';
+        let charsLength = chars.length;
+
+        for (let i = 0; i < length; i++) {
+            res += chars.charAt(Math.floor(Math.random() * charsLength))
+        }
+
+        return res;
+    }
+
     async sendEmailConfirmation(user: User) {
-        const code = randomBytes(6).toString('base64')
+        const code = this.makeCode(6);
 
         console.log(code)
 
