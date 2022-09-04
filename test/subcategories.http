@@ -1,0 +1,37 @@
+POST http://localhost:8080/api/subcategories/4
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExNywiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjYyMzEwNTM0LCJleHAiOjE2NjIzMTE0MzR9.8ZtJag0vGhWWKywA5Iy9Jq8cDcca71rnAxkoNzx7IJc
+
+{
+    "subCategories": [
+        {
+            "name": "Dogs"
+        },
+        {
+            "name": "Cats"
+        },
+        {
+            "name": "Bears"
+        }
+    ]
+}
+
+###
+
+GET http://localhost:8080/api/subcategories/
+
+### 
+
+PUT http://localhost:8080/api/subcategories/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExNywiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjYyMzEwNTM0LCJleHAiOjE2NjIzMTE0MzR9.8ZtJag0vGhWWKywA5Iy9Jq8cDcca71rnAxkoNzx7IJc
+
+{
+    "id": 6,
+    "name": "Cats Updated"
+}
+
+### 
+
+DELETE http://localhost:8080/api/subcategories/6
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExNywiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjYyMzEwNTM0LCJleHAiOjE2NjIzMTE0MzR9.8ZtJag0vGhWWKywA5Iy9Jq8cDcca71rnAxkoNzx7IJc

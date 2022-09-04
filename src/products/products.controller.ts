@@ -64,7 +64,7 @@ export class ProductsController {
     @UseGuards(AtGuard, AdminGuard)
     @HttpCode(HttpStatus.OK)
     @Delete("/:id")
-    deleteProduct(@Param('id') productId: number): Promise<Product> {
+    deleteProduct(@Param('id') productId: number): Promise<any> {
         return this.productsService.deleteProduct(productId)
     }
 }

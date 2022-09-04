@@ -35,9 +35,9 @@ export class ProductService {
         return this.productRepo.find();
     }
 
-    async deleteProduct(product: Product) {
+    async deleteProduct(productId: number) {
         return this.productRepo.delete({
-            id: product.id,
+            id: productId
         })
     }
 

@@ -1,5 +1,5 @@
 import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Product} from "../product/product.entity";
+import {Product} from "../../products/product/product.entity";
 import {IsInt, IsNotEmpty, IsString} from "class-validator";
 
 @Entity()

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {Category} from "./category/category.entity";
 import {CategoryService} from "./category/category.service";
-import {Product} from "./product/product.entity";
+import {Product} from "../products/product/product.entity";
 
 @Injectable()
 export class CategoriesService {
@@ -40,10 +40,8 @@ export class CategoriesService {
         return updatedCategory;
     }
 
-    async deleteCategory(categoryId: number): Promise<Category> {
-        const category = await this.categoryService.getCategoryById(categoryId);
-        await this.categoryService.deleteCategory(category)
-        return category;
+    async deleteCategory(categoryId: number): Promise<any> {
+        return this.categoryService.deleteCategory(categoryId)
     }
 
     async uploadCategoryImage(image: Express.Multer.File, categoryId: number): Promise<Category> {
