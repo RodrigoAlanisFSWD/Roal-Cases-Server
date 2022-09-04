@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { Group } from "../group/group.entity";
+import { Group } from "../../groups/group/group.entity";
 
 @Entity()
 export class SubCategory {

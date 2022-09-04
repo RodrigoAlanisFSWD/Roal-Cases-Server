@@ -13,6 +13,9 @@ import { join } from 'path';
 import { MailModule } from './mail/mail.module';
 import { CategoriesModule } from './categories/categories.module';
 import { SubcategoriesModule } from './subcategories/subcategories.module';
+import { SubCategory } from './subcategories/subcategory/subcategory.entity';
+import { Group } from './groups/group/group.entity';
+import { GroupsModule } from './groups/groups.module';
 
 @Module({
   imports: [AuthModule,
@@ -25,7 +28,7 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
           username: config.get('DATABASE_USER'),
           password: config.get('DATABASE_PASSWORD'),
           database: config.get('DATABASE_DB'),
-          entities: [User, Product, Category],
+          entities: [User, Product, Category, SubCategory, Group],
           synchronize: true
         }),
         inject: [ConfigService]
@@ -45,7 +48,8 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
       MailModule,
       CategoriesModule,
       SubcategoriesModule,
-      ProductsModule
+      ProductsModule,
+      GroupsModule
   ],
   controllers: [AppController],
   providers: [AppService],

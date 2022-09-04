@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, 
 import { IsArray, IsNotEmpty } from 'class-validator';
 import { AtGuard } from 'src/common/guards';
 import { AdminGuard } from 'src/common/guards/admin.guard';
-import { Group } from './group/group.entity';
+import { Group } from '../groups/group/group.entity';
 import { SubcategoriesService } from './subcategories.service';
 import { SubCategory } from './subcategory/subcategory.entity';
 
@@ -44,39 +44,6 @@ export class SubcategoriesController {
     @HttpCode(HttpStatus.OK)
     async deleteSubCategory(@Param("subCategoryId") subCategoryId: number): Promise<any> {
         return this.subCategoriesService.deleteSubCategory(subCategoryId)
-    }
-
-    @Get("/groups/")
-    @HttpCode(HttpStatus.OK)
-    async getGroups(): Promise<Group[]> {
-        return this.subCategoriesService.getGroups()
-    }
-
-    @Get("/groups/:groupId")
-    @HttpCode(HttpStatus.OK)
-    async getGroupSubCategories(@Param("groupId") groupId: number): Promise<SubCategory[]> {
-        return this.subCategoriesService.getGroupSubCategories(groupId)
-    }
-
-    @UseGuards(AtGuard, AdminGuard)
-    @Post("/groups/")
-    @HttpCode(HttpStatus.CREATED)
-    async createGroup(@Body() group: Group): Promise<Group> {
-        return this.subCategoriesService.createGroup(group)
-    }
-
-    @UseGuards(AtGuard, AdminGuard)
-    @Put("/groups/")
-    @HttpCode(HttpStatus.OK)
-    async updateGroup(@Body() group: Group): Promise<Group> {
-        return this.subCategoriesService.updateGroup(group)
-    }
-
-    @UseGuards(AtGuard, AdminGuard)
-    @Delete("/groups/:groupId")
-    @HttpCode(HttpStatus.OK)
-    async deleteGroup(@Param("groupId") groupId: number): Promise<Group> {
-        return this.subCategoriesService.deleteGroup(groupId)
     }
 
 }
