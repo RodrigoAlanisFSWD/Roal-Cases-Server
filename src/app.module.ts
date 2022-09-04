@@ -7,10 +7,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import {User} from "./auth/user/user.entity";
 import { ProductsModule } from './products/products.module';
 import {Product} from "./products/product/product.entity";
-import {Category} from "./products/category/category.entity";
+import {Category} from "./categories/category/category.entity";
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MailModule } from './mail/mail.module';
+import { CategoriesModule } from './categories/categories.module';
+import { SubcategoriesModule } from './subcategories/subcategories.module';
 
 @Module({
   imports: [AuthModule,
@@ -40,7 +42,10 @@ import { MailModule } from './mail/mail.module';
         serveRoot: '/files/products',
         exclude: ['/api*']
       }),
-      MailModule
+      MailModule,
+      CategoriesModule,
+      SubcategoriesModule,
+      ProductsModule
   ],
   controllers: [AppController],
   providers: [AppService],

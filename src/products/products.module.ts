@@ -1,25 +1,22 @@
 import { Module } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
-import {CategoriesController} from "./categories.controller";
 import {MulterModule} from "@nestjs/platform-express";
-import {CategoriesService} from "./categories.service";
 import {ProductService} from "./product/product.service";
-import {CategoryService} from "./category/category.service";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Product} from "./product/product.entity";
-import {Category} from "./category/category.entity";
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'path';
+import { CategoriesModule } from 'src/categories/categories.module';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([Product, Category]),
+      TypeOrmModule.forFeature([Product]),
     MulterModule.register({
       dest: "./public/img"
     }),
+    CategoriesModule
   ],
-  providers: [ProductsService, CategoriesService, ProductService, CategoryService],
-  controllers: [ProductsController, CategoriesController],
+  providers: [ProductsService, ProductService],
+  controllers: [ProductsController],
+  exports: [ProductService],
 })
 export class ProductsModule {}

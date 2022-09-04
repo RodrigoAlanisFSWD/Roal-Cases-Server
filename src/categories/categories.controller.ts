@@ -16,7 +16,7 @@ import {AtGuard} from "../common/guards";
 import {AdminGuard} from "../common/guards/admin.guard";
 import {CategoriesService} from "./categories.service";
 import {Category} from "./category/category.entity";
-import {Product} from "./product/product.entity";
+import {Product} from "../products/product/product.entity";
 import {FileInterceptor} from "@nestjs/platform-express";
 import { diskStorage } from 'multer'
 import { parse } from 'path';
@@ -79,7 +79,7 @@ export class CategoriesController {
     @UseGuards(AtGuard, AdminGuard)
     @HttpCode(HttpStatus.OK)
     @Delete("/:id")
-    deleteCategory(@Param('id') categoryId: number): Promise<Category> {
+    deleteCategory(@Param('id') categoryId: number): Promise<any> {
         return this.categoriesService.deleteCategory(categoryId)
     }
 

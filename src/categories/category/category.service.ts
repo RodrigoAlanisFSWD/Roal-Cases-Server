@@ -31,9 +31,9 @@ export class CategoryService {
         return this.categoryRepo.find();
     }
 
-    async deleteCategory(category: Category) {
+    async deleteCategory(categoryId: number) {
         return this.categoryRepo.delete({
-            id: category.id,
+            id: categoryId
         })
     }
 
