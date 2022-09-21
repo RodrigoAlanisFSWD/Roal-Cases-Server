@@ -19,8 +19,8 @@ export class GroupsController {
 
     @Get("/:groupId")
     @HttpCode(HttpStatus.OK)
-    async getGroupSubCategories(@Param("groupId") groupId: number): Promise<SubCategory[]> {
-        return this.groupsService.getGroupSubCategories(groupId)
+    async getGroup(@Param("groupId") groupId: number): Promise<Group> {
+        return this.groupsService.getGroup(groupId)
     }
 
     @UseGuards(AtGuard, AdminGuard)

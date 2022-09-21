@@ -44,6 +44,7 @@ export class ProductsController {
             filename: (req, file, cb) => {
                 const filename = parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
                 const ext = parse(file.originalname).ext;
+                console.log(filename)
 
                 cb(null, `${filename}${ext}`)
             }

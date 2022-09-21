@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {ProductService} from "./product/product.service";
 import {Product} from "./product/product.entity";
 import { CategoryService } from '../categories/category/category.service';
+import fs, { existsSync, rmSync } from 'fs';
+import { join, parse } from 'path';
 
 @Injectable()
 export class ProductsService {
@@ -42,8 +44,17 @@ export class ProductsService {
 
     async uploadProductImage(image: Express.Multer.File, productId: number): Promise<Product> {
         const product = await this.productService.getProductById(productId);
+        const ext = parse(image.originalname).ext;
 
-        product.imageUrl = `http://localhost:8080/files/products/${image.filename}`
+        if (product.imageUrl !== null) {
+            const fileName = product.id + ext
+            const path = join(__dirname, "../../public/products/" + fileName)
+            if (existsSync(path)) {
+                rmSync(path)
+            }
+        }
+
+        product.imageUrl = `http://localhost:8080/files/categories/${product.id}${ext}`
 
         return this.productService.updateProduct(product);
     }

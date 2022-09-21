@@ -2,7 +2,7 @@ import {Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Req, UseGuards
 import {AuthService} from "./auth.service";
 import {User} from "./user/user.entity";
 import {Tokens} from "../common/types/auth";
-import {AtGuard, RtGuard} from "../common/guards";
+import {AdminGuard, AtGuard, RtGuard} from "../common/guards";
 import {GetCurrentUser} from "../common/decorators";
 import { MailGuard } from 'src/common/guards/mail.guard';
 
@@ -55,5 +55,12 @@ export class AuthController {
     @HttpCode(HttpStatus.OK)
     sendConfirmation(@GetCurrentUser("sub") userId: number) {
         return this.authService.sendConfirmation(userId)
+    }
+    
+    @UseGuards(AtGuard, AdminGuard)
+    @Get("/is_admin")
+    @HttpCode(HttpStatus.OK)
+    isAdmin(): boolean {
+        return true;
     }
 }

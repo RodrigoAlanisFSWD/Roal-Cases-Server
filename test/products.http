@@ -1,10 +1,16 @@
-POST http://localhost:8080/api/products/3
+POST http://localhost:8080/api/products/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2MzUyNTc3NSwiZXhwIjoxNjYzNTI2Njc1fQ.LpVW-z1uJYEOTyoKg3ZtKUPGKUmyo6E1V8CNvBPXzFk
 
 {
   "name": "Blue Case",
-  "description": "Beautiful Deep Blue Case"
+  "description": "Beautiful Deep Blue Case",
+  "subCategories": [
+    {
+      "id": 8,
+      "name": "Sub #1"
+    }
+  ]
 }
 
 ###
@@ -16,7 +22,7 @@ GET http://localhost:8080/api/products/3
 ###
 PUT http://localhost:8080/api/products/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2MzUyNTc3NSwiZXhwIjoxNjYzNTI2Njc1fQ.LpVW-z1uJYEOTyoKg3ZtKUPGKUmyo6E1V8CNvBPXzFk
 
 {
     "id": 3,
@@ -26,5 +32,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpb
   }
 
 ###
-DELETE http://localhost:8080/api/products/3
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcyNzExOCwiZXhwIjoxNjYxNzI4MDE4fQ.ygfsAyfKqJN3ANJaJQFBcYgyxyCX0KwfCkbg4GmpkjA
+DELETE http://localhost:8080/api/products/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2MzUyNTc3NSwiZXhwIjoxNjYzNTI2Njc1fQ.LpVW-z1uJYEOTyoKg3ZtKUPGKUmyo6E1V8CNvBPXzFk

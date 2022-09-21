@@ -1,3 +1,4 @@
+import { SubCategory } from "src/subcategories/subcategory/subcategory.entity";
 import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
 import {Category} from "../../categories/category/category.entity";
 
@@ -19,4 +20,10 @@ export class Product {
 
     @ManyToOne(() => Category, (category) => category.products)
     category: Category;
+
+    @ManyToMany(() => SubCategory, {
+        cascade: true
+    })
+    @JoinTable()
+    subCategories: SubCategory[]
 }
