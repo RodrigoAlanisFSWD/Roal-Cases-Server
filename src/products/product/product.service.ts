@@ -18,8 +18,14 @@ export class ProductService {
     }
 
     async getProductById(id: number) {
-        return this.productRepo.findOneBy({
-            id,
+        return this.productRepo.findOne({
+            where: {
+                id,
+            },
+            relations: {
+                subCategories: true,
+                category: true
+            }
         })
     }
 
@@ -32,7 +38,12 @@ export class ProductService {
     }
 
     async getProducts() {
-        return this.productRepo.find();
+        return this.productRepo.find({
+            relations: {
+                category: true,
+                subCategories: true
+            }
+        });
     }
 
     async deleteProduct(productId: number) {

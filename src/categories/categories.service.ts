@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import {Category} from "./category/category.entity";
 import {CategoryService} from "./category/category.service";
 import {Product} from "../products/product/product.entity";
+import { join, parse } from 'path';
+import fs, { existsSync, rmSync } from 'fs'
 
 @Injectable()
 export class CategoriesService {
@@ -13,6 +15,10 @@ export class CategoriesService {
 
     async getCategories(): Promise<Category[]> {
         return this.categoryService.getCategories();
+    }
+
+    getCategory(categoryId: number): Promise<Category> {
+        return this.categoryService.getCategoryById(categoryId);
     }
 
     async getProductsFromCategory(categoryId: number): Promise<Product[]> {
@@ -46,8 +52,17 @@ export class CategoriesService {
 
     async uploadCategoryImage(image: Express.Multer.File, categoryId: number): Promise<Category> {
         const category = await this.categoryService.getCategoryById(categoryId);
+        const ext = parse(image.originalname).ext;
 
-        category.imageUrl = `http://localhost:8080/files/categories/${image.filename}`
+        if (category.imageUrl !== null) {
+            const fileName = category.id + ext
+            const path = join(__dirname, "../../public/categories/" + fileName)
+            if (existsSync(path)) {
+                rmSync(path)
+            }
+        }
+
+        category.imageUrl = `http://localhost:8080/files/categories/${category.id}${ext}`
 
         return this.categoryService.updateCategory(category);
     }

@@ -1,11 +1,11 @@
 POST http://localhost:8080/api/categories/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjgxLCJlbWFpbCI6InJvZHJpZ29hbGFuaXNmc3dkQGdtYWlsLmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTY2MTcxNDQxMiwiZXhwIjoxNjYxNzE1MzEyfQ.UMsfqD9zml6yuk2rnDedbTviU4R_kHo-2EeE5_Y7beE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjExOCwiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiQURNSU4iLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjYyNTg3MDg1LCJleHAiOjE2NjI1ODc5ODV9.cPuZVxiHfmDNXm23RMPawKBnVh3GpWKZKLGlFcBoSHA
 
 {
-  "name": "Phone Cases",
-  "description": "Beautiful Cases For Android And IOS Phones",
-  "price": 200
+  "name": "Macbook Cases",
+  "description": "Beautiful Cases For Macbook Air And Pro",
+  "price": 500
 }
 
 ###

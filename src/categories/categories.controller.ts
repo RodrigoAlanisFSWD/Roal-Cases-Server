@@ -36,10 +36,16 @@ export class CategoriesController {
         return this.categoriesService.getCategories();
     }
 
-    @Get("/:id")
+    @Get("/products/:id")
     @HttpCode(HttpStatus.OK)
     getProductsFromCategory(@Param('id') categoryId: number): Promise<Product[]> {
         return this.categoriesService.getProductsFromCategory(categoryId);
+    }
+
+    @Get("/:id")
+    @HttpCode(HttpStatus.OK)
+    getCategory(@Param('id') categoryId: number): Promise<Category> {
+        return this.categoriesService.getCategory(categoryId);
     }
 
     @UseGuards(AtGuard, AdminGuard)
@@ -57,7 +63,7 @@ export class CategoriesController {
                 callback(null, "./public/img/categories/")
             },
             filename: (req, file, cb) => {
-                const filename = parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+                const filename = req.params.id;
                 const ext = parse(file.originalname).ext;
 
                 cb(null, `${filename}${ext}`)
