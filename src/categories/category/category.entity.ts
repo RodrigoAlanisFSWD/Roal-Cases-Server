@@ -18,7 +18,8 @@ export class Category {
     description: string;
 
     @Column({
-        nullable: true
+        nullable: true,
+        update: true
     })
     imageUrl: string;
 

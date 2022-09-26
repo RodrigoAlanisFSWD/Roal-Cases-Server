@@ -1,6 +1,7 @@
 import { SubCategory } from "src/subcategories/subcategory/subcategory.entity";
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
 import {Category} from "../../categories/category/category.entity";
+import { ProductImage } from "../image/image.entity";
 
 @Entity()
 export class Product {
@@ -13,13 +14,15 @@ export class Product {
     @Column()
     description: string;
 
-    @Column({
-        nullable: true
+    @ManyToOne(() => Category, (category) => category.products, {
+        cascade: true
     })
-    imageUrl: string;
-
-    @ManyToOne(() => Category, (category) => category.products)
     category: Category;
+
+    @OneToMany(() => ProductImage, (image) => image.product, {
+        cascade: true
+    })
+    images: ProductImage[]
 
     @ManyToMany(() => SubCategory, {
         cascade: true

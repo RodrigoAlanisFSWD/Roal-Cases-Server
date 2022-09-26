@@ -6,10 +6,11 @@ import {ProductService} from "./product/product.service";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Product} from "./product/product.entity";
 import { CategoriesModule } from 'src/categories/categories.module';
+import { ProductImage } from './image/image.entity';
 
 @Module({
   imports: [
-      TypeOrmModule.forFeature([Product]),
+      TypeOrmModule.forFeature([Product, ProductImage]),
     MulterModule.register({
       dest: "./public/img"
     }),

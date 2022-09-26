@@ -7,6 +7,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { parse } from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { ProductImage } from './image/image.entity';
 
 @Controller('/api/products')
 export class ProductsController {
@@ -35,7 +36,7 @@ export class ProductsController {
     }
 
     @UseGuards(AtGuard, AdminGuard)
-    @Post("/upload-image/:id")
+    @Post("/upload-image/")
     @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
             destination: (req, file, callback) => {
@@ -51,8 +52,8 @@ export class ProductsController {
         })
     }))
     @HttpCode(HttpStatus.OK)
-    uploadProductImage(@UploadedFile() image: Express.Multer.File, @Param("id") productId: number): Promise<Product> {
-        return this.productsService.uploadProductImage(image, productId);
+    uploadProductImage(@UploadedFile() image: Express.Multer.File, @Body() productImage: ProductImage): Promise<Product> {
+        return this.productsService.uploadProductImage(image, productImage);
     }
 
     @UseGuards(AtGuard, AdminGuard)

@@ -2,15 +2,21 @@ import { Injectable } from '@nestjs/common';
 import {ProductService} from "./product/product.service";
 import {Product} from "./product/product.entity";
 import { CategoryService } from '../categories/category/category.service';
-import fs, { existsSync, rmSync } from 'fs';
+import fs, { existsSync, rm, rmSync } from 'fs';
 import { join, parse } from 'path';
+import { ProductImage } from './image/image.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { v4 as uid} from 'uuid';
 
 @Injectable()
 export class ProductsService {
 
     constructor(
         private productService: ProductService,
-        private categoryService: CategoryService
+        private categoryService: CategoryService,
+        @InjectRepository(ProductImage) 
+        private imageRepo: Repository<ProductImage>
     ) {
     }
 
@@ -42,19 +48,27 @@ export class ProductsService {
         return this.productService.deleteProduct(productId)
     }
 
-    async uploadProductImage(image: Express.Multer.File, productId: number): Promise<Product> {
-        const product = await this.productService.getProductById(productId);
+    async uploadProductImage(image: Express.Multer.File, productImage: ProductImage): Promise<Product> {
+        const product = await this.productService.getProductById(productImage.product.id);
         const ext = parse(image.originalname).ext;
 
-        if (product.imageUrl !== null) {
-            const fileName = product.id + ext
-            const path = join(__dirname, "../../public/products/" + fileName)
-            if (existsSync(path)) {
-                rmSync(path)
+        if (productImage.type === "MAIN") {
+            const oldMain = product.images.find((img: ProductImage) => img.type === "MAIN")
+
+            if (oldMain) {
+                const fileName = oldMain.imageUrl.split("/files/products/")[1]
+                const path = join(__dirname, "../../public/img/products/" + fileName)
+                if (existsSync(path)) {
+                    rmSync(path)
+                }
             }
         }
 
-        product.imageUrl = `http://localhost:8080/files/categories/${product.id}${ext}`
+        productImage.imageUrl = `http://localhost:8080/files/products/${uid()}${ext}`
+
+        const newImage = await this.imageRepo.save(productImage)
+
+        product.images.push(newImage)
 
         return this.productService.updateProduct(product);
     }

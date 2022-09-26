@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import {Category} from "./category/category.entity";
-import {CategoryService} from "./category/category.service";
-import {Product} from "../products/product/product.entity";
+import { Category } from "./category/category.entity";
+import { CategoryService } from "./category/category.service";
+import { Product } from "../products/product/product.entity";
 import { join, parse } from 'path';
-import fs, { existsSync, rmSync } from 'fs'
+import fs, { existsSync, rm } from 'fs'
 
 @Injectable()
 export class CategoriesService {
@@ -51,19 +51,24 @@ export class CategoriesService {
     }
 
     async uploadCategoryImage(image: Express.Multer.File, categoryId: number): Promise<Category> {
-        const category = await this.categoryService.getCategoryById(categoryId);
-        const ext = parse(image.originalname).ext;
+            const category = await this.categoryService.getCategoryById(categoryId);
+            const ext = parse(image.originalname).ext;
 
-        if (category.imageUrl !== null) {
-            const fileName = category.id + ext
-            const path = join(__dirname, "../../public/categories/" + fileName)
-            if (existsSync(path)) {
-                rmSync(path)
+            console.log(category)
+
+            if (category.imageUrl !== null) {
+                const fileName = category.imageUrl.split("/files/categories/")[1]
+                const path = join(__dirname, "../../public/img/categories/" + fileName)
+
+                if (existsSync(path)) {
+                    rm(path, () => {
+                        console.log("removed")
+                    })
+                }
             }
-        }
 
-        category.imageUrl = `http://localhost:8080/files/categories/${category.id}${ext}`
+            category.imageUrl = `http://localhost:8080/files/categories/${category.id}${ext}`
 
-        return this.categoryService.updateCategory(category);
+            return this.categoryService.saveCategory(category)
     }
 }
