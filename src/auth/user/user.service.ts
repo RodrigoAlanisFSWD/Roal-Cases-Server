@@ -1,7 +1,7 @@
-import {Injectable} from "@nestjs/common";
-import {InjectRepository} from "@nestjs/typeorm";
-import {User} from "./user.entity";
-import {Repository} from "typeorm";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { User } from "./user.entity";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class UserService {
@@ -33,5 +33,16 @@ export class UserService {
 
     async updateUser(user: User) {
         return this.userRepo.save(user);
+    }
+
+    async getUserWithCart(userId: number): Promise<User> {
+        return this.userRepo.findOne({
+            where: {
+                id: userId,
+            },
+            relations: {
+                cart: true
+            }
+        })
     }
 }

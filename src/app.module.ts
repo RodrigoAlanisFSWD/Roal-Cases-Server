@@ -17,6 +17,7 @@ import { SubCategory } from './subcategories/subcategory/subcategory.entity';
 import { Group } from './groups/group/group.entity';
 import { GroupsModule } from './groups/groups.module';
 import { ProductImage } from './products/image/image.entity';
+import { CartModule } from './cart/cart.module';
 
 @Module({
   imports: [AuthModule,
@@ -50,7 +51,8 @@ import { ProductImage } from './products/image/image.entity';
       CategoriesModule,
       SubcategoriesModule,
       ProductsModule,
-      GroupsModule
+      GroupsModule,
+      CartModule
   ],
   controllers: [AppController],
   providers: [AppService],
