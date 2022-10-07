@@ -8,6 +8,7 @@ import { diskStorage } from 'multer';
 import { parse } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { ProductImage } from './image/image.entity';
+import { SearchDTO } from './search';
 
 @Controller('/api/products')
 export class ProductsController {
@@ -22,10 +23,16 @@ export class ProductsController {
         return this.productsService.getProducts();
     }
 
-    @Get("/:id")
+    @Post("/search")
     @HttpCode(HttpStatus.OK)
-    getProduct(@Param('id') productId: number): Promise<Product> {
-        return this.productsService.getProduct(productId);
+    searchProducts(@Body() search: SearchDTO): Promise<Product[]> {
+        return this.productsService.searchProducts(search);
+    }
+
+    @Get("/:slug")
+    @HttpCode(HttpStatus.OK)
+    getProduct(@Param('slug') slug: string): Promise<Product> {
+        return this.productsService.getProduct(slug);
     }
 
     @UseGuards(AtGuard, AdminGuard)
@@ -36,24 +43,50 @@ export class ProductsController {
     }
 
     @UseGuards(AtGuard, AdminGuard)
-    @Post("/upload-image/")
+    @Post("/upload-image/:id/:type")
     @UseInterceptors(FileInterceptor('image', {
         storage: diskStorage({
             destination: (req, file, callback) => {
                 callback(null, "./public/img/products/")
             },
             filename: (req, file, cb) => {
-                const filename = parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+                const filename = uuidv4();
                 const ext = parse(file.originalname).ext;
-                console.log(filename)
 
                 cb(null, `${filename}${ext}`)
             }
         })
     }))
     @HttpCode(HttpStatus.OK)
-    uploadProductImage(@UploadedFile() image: Express.Multer.File, @Body() productImage: ProductImage): Promise<Product> {
-        return this.productsService.uploadProductImage(image, productImage);
+    uploadProductImage(@UploadedFile() image: Express.Multer.File, @Param("id") productId: number, @Param("type") type: string): Promise<Product> {
+        return this.productsService.uploadProductImage(image, productId, type);
+    }
+
+    @UseGuards(AtGuard, AdminGuard)
+    @Put("/update-image/:id")
+    @UseInterceptors(FileInterceptor('image', {
+        storage: diskStorage({
+            destination: (req, file, callback) => {
+                callback(null, "./public/img/products/")
+            },
+            filename: (req, file, cb) => {
+                const filename = uuidv4();
+                const ext = parse(file.originalname).ext;
+
+                cb(null, `${filename}${ext}`)
+            }
+        })
+    }))
+    @HttpCode(HttpStatus.OK)
+    updateProductImage(@UploadedFile() image: Express.Multer.File, @Param("id") imageId: number): Promise<ProductImage> {
+        return this.productsService.updateProductImage(image, imageId);
+    }
+
+    @UseGuards(AtGuard, AdminGuard)
+    @Delete("/delete-image/:id")
+    @HttpCode(HttpStatus.OK)
+    deleteProductImage(@Param("id") id: number) {
+        return this.productsService.deleteProductImage(id)
     }
 
     @UseGuards(AtGuard, AdminGuard)

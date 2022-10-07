@@ -24,7 +24,8 @@ export class ProductService {
             },
             relations: {
                 subCategories: true,
-                category: true
+                category: true,
+                images: true
             }
         })
     }

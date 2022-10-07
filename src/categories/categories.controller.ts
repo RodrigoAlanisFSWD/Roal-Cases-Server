@@ -36,16 +36,10 @@ export class CategoriesController {
         return this.categoriesService.getCategories();
     }
 
-    @Get("/products/:id")
+    @Get("/:slug")
     @HttpCode(HttpStatus.OK)
-    getProductsFromCategory(@Param('id') categoryId: number): Promise<Product[]> {
-        return this.categoriesService.getProductsFromCategory(categoryId);
-    }
-
-    @Get("/:id")
-    @HttpCode(HttpStatus.OK)
-    getCategory(@Param('id') categoryId: number): Promise<Category> {
-        return this.categoriesService.getCategory(categoryId);
+    getCategory(@Param('slug') slug: string): Promise<Category> {
+        return this.categoriesService.getCategory(slug);
     }
 
     @UseGuards(AtGuard, AdminGuard)

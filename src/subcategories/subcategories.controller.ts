@@ -25,6 +25,12 @@ export class SubcategoriesController {
         return this.subCategoriesService.getSubCategories()
     }
 
+    @Post("/fromIds")
+    @HttpCode(HttpStatus.OK)
+    async getSubCategoriesFromIds(@Body() ids: Array<number>): Promise<SubCategory[]> {
+        return this.subCategoriesService.getSubCategoriesFromIds(ids)
+    }
+
     @UseGuards(AtGuard, AdminGuard)
     @Post("/:groupId")
     @HttpCode(HttpStatus.CREATED)

@@ -11,6 +11,12 @@ export class Product {
     @Column()
     name: string;
 
+    @Column({ nullable: true })
+    price: number;
+
+    @Column({ nullable: true })
+    slug: string;
+
     @Column()
     description: string;
 
@@ -24,7 +30,7 @@ export class Product {
     })
     images: ProductImage[]
 
-    @ManyToMany(() => SubCategory, {
+    @ManyToMany(() => SubCategory, (subCategory) => subCategory.products, {
         cascade: true
     })
     @JoinTable()

@@ -26,6 +26,10 @@ export class SubCategoryService {
         return this.subCategoryRepo.findOne(options);
     }
 
+    async findSubCategories(options: FindOneOptions<SubCategory>) {
+        return this.subCategoryRepo.find(options);
+    }
+
     async getSubCategories() {
         return this.subCategoryRepo.find();
     }

@@ -4,6 +4,7 @@ import { CategoryService } from "./category/category.service";
 import { Product } from "../products/product/product.entity";
 import { join, parse } from 'path';
 import fs, { existsSync, rm } from 'fs'
+import { toSlug } from 'src/common/utils/functions';
 
 @Injectable()
 export class CategoriesService {
@@ -17,8 +18,15 @@ export class CategoriesService {
         return this.categoryService.getCategories();
     }
 
-    getCategory(categoryId: number): Promise<Category> {
-        return this.categoryService.getCategoryById(categoryId);
+    getCategory(slug: string): Promise<Category> {
+        return this.categoryService.findCategory({
+            where: {
+                slug,
+            },
+            relations: {
+                products: true
+            }
+        });
     }
 
     async getProductsFromCategory(categoryId: number): Promise<Product[]> {
@@ -35,12 +43,14 @@ export class CategoriesService {
     }
 
     async createCategory(category: Category): Promise<Category> {
+        category.slug = toSlug(category.name)
         const newCategory = await this.categoryService.saveCategory(category);
 
         return newCategory
     }
 
     async updateCategory(category: Category): Promise<Category> {
+        category.slug = toSlug(category.name)
         const updatedCategory = await this.categoryService.updateCategory(category)
 
         return updatedCategory;

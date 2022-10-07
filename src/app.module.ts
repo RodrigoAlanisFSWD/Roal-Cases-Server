@@ -16,6 +16,7 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { SubCategory } from './subcategories/subcategory/subcategory.entity';
 import { Group } from './groups/group/group.entity';
 import { GroupsModule } from './groups/groups.module';
+import { ProductImage } from './products/image/image.entity';
 
 @Module({
   imports: [AuthModule,
@@ -28,7 +29,7 @@ import { GroupsModule } from './groups/groups.module';
           username: config.get('DATABASE_USER'),
           password: config.get('DATABASE_PASSWORD'),
           database: config.get('DATABASE_DB'),
-          entities: [User, Product, Category, SubCategory, Group],
+          entities: [User, Product, Category, SubCategory, Group, ProductImage],
           synchronize: true
         }),
         inject: [ConfigService]
