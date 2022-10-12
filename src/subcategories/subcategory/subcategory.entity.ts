@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString } from "class-validator";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Product } from "src/products/product/product.entity";
+import { Column, Entity, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Group } from "../../groups/group/group.entity";
 
 @Entity()
@@ -14,4 +15,7 @@ export class SubCategory {
 
     @ManyToOne(() => Group, (group) => group.subCategories)
     group: Group;
+
+    @ManyToMany(() => Product, (product) => product.subCategories)
+    products: Product[]
 }

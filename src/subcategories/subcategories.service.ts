@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
 import { Group } from '../groups/group/group.entity';
 import { GroupService } from '../groups/group/group.service';
 import { CreateSubCategoriesDTO } from './subcategories.controller';
@@ -41,6 +42,14 @@ export class SubcategoriesService {
 
     async getSubCategories(): Promise<SubCategory[]> {
         return this.subCategoryService.getSubCategories()
+    }
+
+    async getSubCategoriesFromIds(ids: number[]): Promise<SubCategory[]> {
+        return this.subCategoryService.findSubCategories({
+            where: {
+                id: In(ids)
+            }
+        })
     }
 
 }

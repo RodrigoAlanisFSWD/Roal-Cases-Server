@@ -12,6 +12,8 @@ export class Group {
     @Column()
     name: string;
 
-    @OneToMany(() => SubCategory, (subCategory: SubCategory) => subCategory.group)
+    @OneToMany(() => SubCategory, (subCategory: SubCategory) => subCategory.group, {
+        cascade: true
+    })
     subCategories: SubCategory[];
 }

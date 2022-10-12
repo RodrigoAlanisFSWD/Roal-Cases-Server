@@ -16,6 +16,11 @@ import { SubcategoriesModule } from './subcategories/subcategories.module';
 import { SubCategory } from './subcategories/subcategory/subcategory.entity';
 import { Group } from './groups/group/group.entity';
 import { GroupsModule } from './groups/groups.module';
+import { ProductImage } from './products/image/image.entity';
+import { CartModule } from './cart/cart.module';
+import { Cart, CartProduct } from './cart/cart.entity';
+import { ModelsModule } from './models/models.module';
+import { Brand, Model } from './models/model.entity';
 
 @Module({
   imports: [AuthModule,
@@ -28,7 +33,7 @@ import { GroupsModule } from './groups/groups.module';
           username: config.get('DATABASE_USER'),
           password: config.get('DATABASE_PASSWORD'),
           database: config.get('DATABASE_DB'),
-          entities: [User, Product, Category, SubCategory, Group],
+          entities: [User, Product, Category, SubCategory, Group, ProductImage, Cart, CartProduct, Model, Brand],
           synchronize: true
         }),
         inject: [ConfigService]
@@ -49,7 +54,9 @@ import { GroupsModule } from './groups/groups.module';
       CategoriesModule,
       SubcategoriesModule,
       ProductsModule,
-      GroupsModule
+      GroupsModule,
+      CartModule,
+      ModelsModule
   ],
   controllers: [AppController],
   providers: [AppService],

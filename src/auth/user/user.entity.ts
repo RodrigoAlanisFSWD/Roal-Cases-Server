@@ -1,5 +1,6 @@
-import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {IsEmail, IsNotEmpty, IsString} from "class-validator";
+import { Cart } from "src/cart/cart.entity";
 
 @Entity()
 export class User {
@@ -34,4 +35,8 @@ export class User {
 
     @Column({ nullable: true })
     mail_confirmation_code: string;
+
+    @OneToOne(() => Cart, (cart) => cart.user)
+    @JoinColumn()
+    cart: Cart;
 }

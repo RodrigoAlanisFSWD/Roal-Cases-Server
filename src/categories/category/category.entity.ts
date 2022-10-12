@@ -7,6 +7,9 @@ export class Category {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column({ nullable: true })
+    slug: string;
+
     @IsNotEmpty()
     @IsString()
     @Column()
@@ -18,7 +21,8 @@ export class Category {
     description: string;
 
     @Column({
-        nullable: true
+        nullable: true,
+        update: true
     })
     imageUrl: string;
 
