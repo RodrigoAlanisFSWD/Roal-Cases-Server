@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { User } from 'src/auth/user/user.entity';
 import { UserService } from 'src/auth/user/user.service';
 import { Repository } from 'typeorm';
 import { Cart, CartProduct } from './cart.entity';
@@ -15,39 +16,82 @@ export class CartService {
         private userService: UserService
     ) { }
 
-    async getCart(userId: number): Promise<Cart> {
-        const user = await this.userService.getUserWithCart(userId)
+    async createCart(userId: number) {
+        const user = await this.userService.getUserWithCart(userId);
 
-        return user.cart
+        if (!user.cart) {
+            const cart = this.cartRepo.create({
+                user,
+            })
+    
+            return this.cartRepo.save(cart)
+        }
+
+        return
+    }
+
+    async getCart(userId: number): Promise<Cart> {
+        const cart = await this.cartRepo.findOne({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            relations: {
+                user: true,
+                products: {
+                    product: true
+                }
+            }
+        })
+
+        return cart
     }
 
     async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
-        const newProduct = await this.cartProductRepo.save(product)
-        const cart = (await this.userService.getUserWithCart(userId)).cart
+        const user = await this.userService.getUserWithCart(userId)
 
-        cart.products.push(newProduct)
+        const cart = user.cart;
 
-        await this.cartRepo.save(cart);
+        const localID = `p-${product.product.id}-${product.product.name}-m-${product.model.id}-${product.model.name}` 
+        
+        const exists = cart.products.find((p: CartProduct) => p.localID === localID);
+
+        if (exists) {
+            exists.count += product.count;
+
+            await this.cartProductRepo.save(exists)
+        } else {
+            const newProduct = await this.cartProductRepo.save(product)
+
+
+            cart.products = [
+                ...cart.products,
+                newProduct,
+            ]
+
+            await this.cartRepo.save(cart);
+        }
 
         return cart;
     }
 
-    async removeProductFromCart(product: CartProduct, userId: number): Promise<Cart> {
+    async removeProductFromCart(id: number, userId: number): Promise<Cart> {
         const cart = (await this.userService.getUserWithCart(userId)).cart
 
-        cart.products.filter((p: CartProduct) => p.id !== product.id);
+        cart.products.filter((p: CartProduct) => p.id !== id);
 
         await this.cartRepo.save(cart);
 
-        await this.cartProductRepo.delete(product);
+        await this.cartProductRepo.delete(id);
 
         return cart;
     }
 
-    async editProductInCart(product: CartProduct, action: string, payload: number): Promise<CartProduct> {
+    async editProductInCart(product: CartProduct, action: string, payload: any): Promise<CartProduct> {
         switch(action) {
             case "ADD":
-                product.count += payload;
+                product.count += parseInt(payload);
             break;
             case "LESS":
                 product.count -= payload

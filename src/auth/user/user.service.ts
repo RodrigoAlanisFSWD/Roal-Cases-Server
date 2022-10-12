@@ -41,7 +41,9 @@ export class UserService {
                 id: userId,
             },
             relations: {
-                cart: true
+                cart: {
+                    products: true
+                }
             }
         })
     }

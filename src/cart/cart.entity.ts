@@ -1,4 +1,5 @@
 import { User } from "src/auth/user/user.entity";
+import { Model } from "src/models/model.entity";
 import { Product } from "src/products/product/product.entity";
 import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
@@ -21,7 +22,13 @@ export class CartProduct {
     id: number;
 
     @Column()
+    localID: string;
+
+    @Column()
     count: number;
+
+    @OneToOne(() => Model)
+    model: Model;
 
     @OneToOne(() => Product)
     @JoinColumn()

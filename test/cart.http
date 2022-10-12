@@ -1,0 +1,61 @@
+POST http://localhost:8080/api/cart/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+POST http://localhost:8080/api/cart/add
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+{
+    "count": 2,
+    "product": {
+    "id": 7,
+    "name": "Cat Case",
+    "price": null,
+    "slug": "cat-case",
+    "description": "Cat Case",
+    "category": {
+      "id": 12,
+      "slug": "mac-cases",
+      "name": "Mac Cases",
+      "description": "Mac Cases",
+      "imageUrl": "http://localhost:8080/files/categories/12.png",
+      "price": 500
+    },
+    "subCategories": [
+      {
+        "id": 17,
+        "name": "Cats"
+      }
+    ]
+  }
+}
+
+###
+
+GET http://localhost:8080/api/cart/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+DELETE http://localhost:8080/api/cart/11
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+PUT http://localhost:8080/api/cart/LESS/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+{
+      "id": 12,
+      "count": 4,
+      "product": {
+        "id": 7,
+        "name": "Cat Case",
+        "price": null,
+        "slug": "cat-case",
+        "description": "Cat Case"
+      }
+}

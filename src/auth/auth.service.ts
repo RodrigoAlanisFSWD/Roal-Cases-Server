@@ -7,6 +7,7 @@ import {JwtService} from "@nestjs/jwt";
 import { randomBytes } from 'node:crypto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
         private userService: UserService, 
         private jwtService: JwtService,
         private mailService: MailService,
-        private config: ConfigService
+        private config: ConfigService,
         ) {
     }
 

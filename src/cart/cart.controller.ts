@@ -22,15 +22,22 @@ export class CartController {
     @UseGuards(AtGuard)
     @Post("/")
     @HttpCode(HttpStatus.CREATED)
+    createCart(@GetCurrentUser("sub") userId: number): Promise<Cart> {
+        return this.cartService.createCart(userId);
+    }
+
+    @UseGuards(AtGuard)
+    @Post("/add")
+    @HttpCode(HttpStatus.CREATED)
     addProduct(@GetCurrentUser('sub') userId: number, @Body() product: CartProduct): Promise<Cart> {
         return this.cartService.addProductToCart(product, userId)
     }
 
     @UseGuards(AtGuard)
-    @Delete("/")
+    @Delete("/:id")
     @HttpCode(HttpStatus.CREATED)
-    removeProduct(@GetCurrentUser('sub') userId: number, @Body() product: CartProduct): Promise<Cart> {
-        return this.cartService.removeProductFromCart(product, userId)
+    removeProduct(@GetCurrentUser('sub') userId: number, @Param("id") id: number): Promise<Cart> {
+        return this.cartService.removeProductFromCart(id, userId)
     }
 
     @UseGuards(AtGuard)

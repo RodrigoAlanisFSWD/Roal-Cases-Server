@@ -9,10 +9,13 @@ import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {AtStrategy, RtStrategy} from "./strategies";
 import { MailModule } from 'src/mail/mail.module';
+import { CartService } from 'src/cart/cart.service';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User]), PassportModule, JwtModule.register({}), ConfigModule, MailModule],
   controllers: [AuthController],
   providers: [AuthService, AtStrategy, RtStrategy, UserService],
+  exports: [UserService],
 })
 export class AuthModule {}
