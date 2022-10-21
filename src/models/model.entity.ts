@@ -9,11 +9,15 @@ export class Brand {
     @Column()
     name: string;
 
-    @ManyToMany(() => Category)
+    @ManyToMany(() => Category, {
+        cascade: true
+    })
     @JoinTable()
     categories: Category;
 
-    @OneToMany(() => Model, (model) => model.brand)
+    @OneToMany(() => Model, (model) => model.brand, {
+        cascade: true
+    })
     models: Model[];
 }
 

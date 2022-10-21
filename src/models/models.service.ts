@@ -17,6 +17,10 @@ export class ModelsService {
         return this.modelRepo.save(model)
     }
 
+    async updateModel(model: Model): Promise<Model> {
+        return this.modelRepo.save(model)
+    }
+
     async deleteModel(id: number): Promise<any> {
         return this.modelRepo.delete(id)
     }
@@ -36,6 +40,20 @@ export class ModelsService {
         return models;
     }
 
+    async getModel(id: number): Promise<Model> {
+        const model = await this.modelRepo.findOne({
+            where: {
+                id,
+            },
+            relations: {
+                categories: true,
+                brand: true
+            }
+        })
+
+        return model
+    }
+
     async createBrand(brand: Brand): Promise<Brand> {
         return this.brandRepo.save(brand)
     }
@@ -50,6 +68,17 @@ export class ModelsService {
 
     async getBrands(): Promise<Brand[]> {
         return this.brandRepo.find({
+            relations: {
+                categories: true
+            }
+        })
+    }
+
+    async getBrand(id: any): Promise<Brand> {
+        return this.brandRepo.findOne({
+            where: {
+                id,
+            },
             relations: {
                 categories: true
             }

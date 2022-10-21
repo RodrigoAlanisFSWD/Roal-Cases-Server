@@ -4,7 +4,6 @@ import {User} from "./user/user.entity";
 import {Tokens} from "../common/types/auth";
 import {AdminGuard, AtGuard, RtGuard} from "../common/guards";
 import {GetCurrentUser} from "../common/decorators";
-import { MailGuard } from 'src/common/guards/mail.guard';
 
 @Controller('/api/auth')
 export class AuthController {

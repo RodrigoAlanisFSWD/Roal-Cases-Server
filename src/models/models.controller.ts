@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AdminGuard, AtGuard } from 'src/common/guards';
 import { ModelsService } from './models.service';
 import { Brand, Model } from './Model.entity';
@@ -18,6 +18,13 @@ export class ModelsController {
     }
 
     @UseGuards(AtGuard, AdminGuard)
+    @HttpCode(HttpStatus.CREATED)
+    @Put("/")
+    async updateModel(@Body() model: Model): Promise<Model> {
+        return this.modelsService.updateModel(model)
+    }
+
+    @UseGuards(AtGuard, AdminGuard)
     @HttpCode(HttpStatus.OK)
     @Delete("/:id")
     async deleteModel(@Param("id") id: number): Promise<any> {
@@ -25,9 +32,15 @@ export class ModelsController {
     }
 
     @HttpCode(HttpStatus.OK)
-    @Get("/:brand")
+    @Get("/get/:brand")
     async getModels(@Param("brand") brand: number): Promise<Model[]> {
         return this.modelsService.getModels(brand)
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Get("/getOne/:id")
+    async getModel(@Param("id") id: number): Promise<Model> {
+        return this.modelsService.getModel(id)
     }
 
     @HttpCode(HttpStatus.OK)
@@ -52,9 +65,21 @@ export class ModelsController {
 
     @UseGuards(AtGuard, AdminGuard)
     @HttpCode(HttpStatus.OK)
+    @Put("/brands/")
+    async updateBrand(@Body() brand: Brand): Promise<Brand> {
+        return this.modelsService.updateBrand(brand)
+    }
+
+    @HttpCode(HttpStatus.OK)
     @Get("/brands/")
     async getBrands(): Promise<Brand[]> {
         return this.modelsService.getBrands()
+    }
+
+    @HttpCode(HttpStatus.OK)
+    @Get("/brands/:id")
+    async getBrand(@Param("id") id: number): Promise<Brand> {
+        return this.modelsService.getBrand(id)
     }
 
     @HttpCode(HttpStatus.OK)

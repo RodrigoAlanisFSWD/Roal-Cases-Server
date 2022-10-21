@@ -72,7 +72,6 @@ export class ProductsService {
                 images: true
             }
         });
-        const ext = parse(image.originalname).ext;
 
         if (type === "MAIN") {
             const oldMain = product.images.find((img: ProductImage) => img.type === "MAIN")
