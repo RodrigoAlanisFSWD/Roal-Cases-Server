@@ -66,6 +66,8 @@ export class AuthService {
 
         await this.updateRtHash(user.id, tokens.refresh_token);
 
+        console.log("refreshed")
+
         return tokens;
     }
 

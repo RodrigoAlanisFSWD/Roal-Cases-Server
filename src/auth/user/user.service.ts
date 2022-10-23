@@ -42,7 +42,9 @@ export class UserService {
             },
             relations: {
                 cart: {
-                    products: true
+                    products: {
+                        product: true
+                    }
                 }
             }
         })

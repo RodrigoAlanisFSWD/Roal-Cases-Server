@@ -40,8 +40,11 @@ export class CartService {
             relations: {
                 user: true,
                 products: {
-                    product: true
-                }
+                    product: {
+                        images: true,
+                    },
+                    model: true
+                },
             }
         })
 
@@ -49,60 +52,63 @@ export class CartService {
     }
 
     async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
-        const user = await this.userService.getUserWithCart(userId)
+            const user = await this.userService.getUserWithCart(userId)
 
-        const cart = user.cart;
+            const cart = user.cart;
+    
+            const localID = `p-${product.product.id}-${product.product.name.split(" ").join("")}-m-${product.model.id}-${product.model.name.split(" ").join("")}` 
+            
+            const exists = cart.products.find((p: CartProduct) => p.localID === localID);
+    
+            if (exists) {
+                exists.count += product.count;
+    
+                await this.cartProductRepo.save(exists)
+            } else {
+                console.log(product, localID)
+                const newProduct = await this.cartProductRepo.save({
+                    ...product,
+                    localID
+                })
+    
+                console.log(newProduct) 
+    
+                cart.products.push(newProduct)    
+            }
 
-        const localID = `p-${product.product.id}-${product.product.name}-m-${product.model.id}-${product.model.name}` 
-        
-        const exists = cart.products.find((p: CartProduct) => p.localID === localID);
-
-        if (exists) {
-            exists.count += product.count;
-
-            await this.cartProductRepo.save(exists)
-        } else {
-            const newProduct = await this.cartProductRepo.save(product)
-
-
-            cart.products = [
-                ...cart.products,
-                newProduct,
-            ]
+            cart.totalCost = cart.products.reduce((acc: any, cur: CartProduct) => acc += cur.product.price * cur.count, 0)
 
             await this.cartRepo.save(cart);
-        }
-
-        return cart;
+    
+            return cart;     
     }
 
     async removeProductFromCart(id: number, userId: number): Promise<Cart> {
         const cart = (await this.userService.getUserWithCart(userId)).cart
 
-        cart.products.filter((p: CartProduct) => p.id !== id);
+        await this.cartProductRepo.delete(id)
+
+        cart.products = cart.products.filter((p: CartProduct) => p.id != id);
+
+        cart.totalCost = cart.products.reduce((acc: any, cur: CartProduct) => acc += cur.product.price * cur.count, 0)
 
         await this.cartRepo.save(cart);
-
-        await this.cartProductRepo.delete(id);
 
         return cart;
     }
 
-    async editProductInCart(product: CartProduct, action: string, payload: any): Promise<CartProduct> {
-        switch(action) {
-            case "ADD":
-                product.count += parseInt(payload);
-            break;
-            case "LESS":
-                product.count -= payload
-            break;  
-            default:
-                return product
-        }
+    async editProductInCart(product: CartProduct, newCount: number, userId: number): Promise<Cart> {
+        product.count = newCount
 
         await this.cartProductRepo.save(product)
 
-        return product
+        const cart = await this.getCart(userId);
+
+        cart.totalCost = cart.products.reduce((acc: any, cur: CartProduct) => acc += cur.product.price * cur.count, 0)
+
+        await this.cartRepo.save(cart);
+
+        return cart
     }
 
 }

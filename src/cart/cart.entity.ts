@@ -11,7 +11,12 @@ export class Cart {
     @OneToOne(() => User, (user) => user.cart)
     user: User;
 
-    @ManyToMany(() => CartProduct)
+    @Column({ default: 0 })
+    totalCost: number;
+
+    @ManyToMany(() => CartProduct, {
+        cascade: true
+    })
     @JoinTable()
     products: CartProduct[]
 }
@@ -27,10 +32,15 @@ export class CartProduct {
     @Column()
     count: number;
 
-    @OneToOne(() => Model)
+    @OneToOne(() => Model, {
+        cascade: true
+    })
+    @JoinColumn()
     model: Model;
 
-    @OneToOne(() => Product)
+    @OneToOne(() => Product, {
+        cascade: true
+    })
     @JoinColumn()
     product: Product;
 }

@@ -41,10 +41,10 @@ export class CartController {
     }
 
     @UseGuards(AtGuard)
-    @Put("/:action/:payload")
+    @Put("/:count")
     @HttpCode(HttpStatus.CREATED)
-    editProduct(@Body() product: CartProduct, @Param("action") action: string, @Param("payload") payload: number): Promise<CartProduct> {
-        return this.cartService.editProductInCart(product, action, payload);
+    editProduct(@Body() product: CartProduct, @Param("count") count: number, @GetCurrentUser('sub') userId: number): Promise<Cart> {
+        return this.cartService.editProductInCart(product, count, userId);
     }
 
 
