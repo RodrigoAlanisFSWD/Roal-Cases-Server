@@ -52,9 +52,7 @@ export class CartService {
     }
 
     async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
-            const user = await this.userService.getUserWithCart(userId)
-
-            const cart = user.cart;
+            const cart = await this.getCart(userId);
     
             const localID = `p-${product.product.id}-${product.product.name.split(" ").join("")}-m-${product.model.id}-${product.model.name.split(" ").join("")}` 
             
@@ -65,14 +63,11 @@ export class CartService {
     
                 await this.cartProductRepo.save(exists)
             } else {
-                console.log(product, localID)
                 const newProduct = await this.cartProductRepo.save({
                     ...product,
                     localID
                 })
-    
-                console.log(newProduct) 
-    
+        
                 cart.products.push(newProduct)    
             }
 

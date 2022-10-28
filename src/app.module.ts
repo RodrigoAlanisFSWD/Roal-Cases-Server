@@ -21,6 +21,7 @@ import { CartModule } from './cart/cart.module';
 import { Cart, CartProduct } from './cart/cart.entity';
 import { ModelsModule } from './models/models.module';
 import { Brand, Model } from './models/model.entity';
+import { AddressesModule } from './addresses/addresses.module';
 
 @Module({
   imports: [AuthModule,
@@ -56,7 +57,8 @@ import { Brand, Model } from './models/model.entity';
       ProductsModule,
       GroupsModule,
       CartModule,
-      ModelsModule
+      ModelsModule,
+      AddressesModule
   ],
   controllers: [AppController],
   providers: [AppService],

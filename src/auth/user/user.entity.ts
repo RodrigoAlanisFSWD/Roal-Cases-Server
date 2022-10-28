@@ -1,6 +1,7 @@
-import {Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {IsEmail, IsNotEmpty, IsString} from "class-validator";
 import { Cart } from "src/cart/cart.entity";
+import { Address } from "src/addresses/address/address.entity";
 
 @Entity()
 export class User {
@@ -39,4 +40,7 @@ export class User {
     @OneToOne(() => Cart, (cart) => cart.user)
     @JoinColumn()
     cart: Cart;
+
+    @OneToMany(() => Address, (address) => address.user)
+    addresses: Address[]
 }
