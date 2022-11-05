@@ -51,6 +51,23 @@ export class CartService {
         return cart
     }
 
+    async getCartFromId(id: number): Promise<Cart> {
+        return await this.cartRepo.findOne({
+            where: {
+                id,
+            },
+            relations: {
+                user: true,
+                products: {
+                    product: {
+                        images: true,
+                    },
+                    model: true
+                },
+            }
+        })
+    }
+
     async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
             const cart = await this.getCart(userId);
     
@@ -104,6 +121,21 @@ export class CartService {
         await this.cartRepo.save(cart);
 
         return cart
+    }
+
+    async deleteCart(userId: number): Promise<any> {
+        const cart = await this.cartRepo.findOne({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            relations: {
+                user: true
+            }
+        })
+       
+        return await this.cartRepo.delete(cart)
     }
 
 }

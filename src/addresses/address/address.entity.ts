@@ -12,10 +12,7 @@ export class Address {
     @Column()
     street: string;
 
-    @Column()
-    number: number;
-
-    @Column()
+    @Column({ nullable: true })
     aparment: string;
 
     @Column()
@@ -24,9 +21,6 @@ export class Address {
     @Column()
     state: string;
 
-    @Column()
-    location: string;
-
-    @ManyToOne(() => User, (user) => user.cart)
+    @ManyToOne(() => User, (user) => user.addresses)
     user: User;
 }

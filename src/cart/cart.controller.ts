@@ -47,6 +47,13 @@ export class CartController {
         return this.cartService.editProductInCart(product, count, userId);
     }
 
+    @UseGuards(AtGuard)
+    @Delete("/all")
+    @HttpCode(HttpStatus.OK)
+    deleteCart(@GetCurrentUser("sub") userId: number): Promise<any> {
+        return this.cartService.deleteCart(userId)
+    }
+
 
 }
 

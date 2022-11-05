@@ -1,7 +1,7 @@
 import { User } from "src/auth/user/user.entity";
 import { Model } from "src/models/model.entity";
 import { Product } from "src/products/product/product.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Cart {
@@ -14,10 +14,9 @@ export class Cart {
     @Column({ default: 0 })
     totalCost: number;
 
-    @ManyToMany(() => CartProduct, {
+    @OneToMany(() => CartProduct, (product) => product.cart, {
         cascade: true
     })
-    @JoinTable()
     products: CartProduct[]
 }
 
@@ -43,4 +42,7 @@ export class CartProduct {
     })
     @JoinColumn()
     product: Product;
+
+    @ManyToOne(() => Cart, (cart) => cart.products)
+    cart: Cart;
 }

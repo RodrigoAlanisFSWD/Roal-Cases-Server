@@ -22,6 +22,10 @@ import { Cart, CartProduct } from './cart/cart.entity';
 import { ModelsModule } from './models/models.module';
 import { Brand, Model } from './models/model.entity';
 import { AddressesModule } from './addresses/addresses.module';
+import { Address } from './addresses/address/address.entity';
+import { PaymentsModule } from './payments/payments.module';
+import { OrdersModule } from './orders/orders.module';
+import { Order, OrderProduct } from './orders/order/order.entity';
 
 @Module({
   imports: [AuthModule,
@@ -34,7 +38,7 @@ import { AddressesModule } from './addresses/addresses.module';
           username: config.get('DATABASE_USER'),
           password: config.get('DATABASE_PASSWORD'),
           database: config.get('DATABASE_DB'),
-          entities: [User, Product, Category, SubCategory, Group, ProductImage, Cart, CartProduct, Model, Brand],
+          entities: [User, Product, Category, SubCategory, Group, ProductImage, Cart, CartProduct, Model, Brand, Address, Order, OrderProduct],
           synchronize: true
         }),
         inject: [ConfigService]
@@ -58,7 +62,9 @@ import { AddressesModule } from './addresses/addresses.module';
       GroupsModule,
       CartModule,
       ModelsModule,
-      AddressesModule
+      AddressesModule,
+      PaymentsModule,
+      OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],
