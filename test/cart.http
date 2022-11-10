@@ -1,0 +1,64 @@
+POST http://localhost:8080/api/cart/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+POST http://localhost:8080/api/cart/add
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2NjM4OTE5NywiZXhwIjoxNjY2MzkwMDk3fQ.x5kMwYCwSZDMQrGHz5zsIopknVeMVeKAifvDpeprPro
+
+{
+    "count": 2,
+    "product": {
+    "id": 6,
+    "name": "Yellow Case",
+    "price": 200,
+    "slug": "yellow-case",
+    "description": "Phone Case With Yellow Colors",
+    "category": {
+      "id": 11,
+      "slug": "phone-cases",
+      "name": "Phone Cases",
+      "description": "Phone Cases Description",
+      "imageUrl": "http://localhost:8080/files/categories/11.png",
+      "price": 300
+    },
+    "subCategories": [
+      {
+        "id": 16,
+        "name": "Yellow"
+      }
+    ]
+  },
+  "model": {
+    "id": 1
+  }
+}
+
+###
+
+GET http://localhost:8080/api/cart/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+DELETE http://localhost:8080/api/cart/11
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+###
+
+PUT http://localhost:8080/api/cart/LESS/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IlVTRVIiLCJtYWlsX2NvbmZpcm1lZCI6dHJ1ZSwiaWF0IjoxNjY1MjUzODQxLCJleHAiOjE2NjUyNTQ3NDF9.Ke0WxbWC5Axz0f_uTG3iGXg1dysJD2L3v6Pfbr9jm94
+
+{
+      "id": 12,
+      "count": 4,
+      "product": {
+        "id": 7,
+        "name": "Cat Case",
+        "price": null,
+        "slug": "cat-case",
+        "description": "Cat Case"
+      }
+}

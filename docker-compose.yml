@@ -1,0 +1,17 @@
+version: '3'
+services:
+  database:
+    container_name: roal_cases_database
+    image: postgres:alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=roal_cases
+    ports:
+      - 5432:5432
+    volumes:
+      - roal_cases_db:/var/lib/postgresql/data
+volumes:
+  roal_cases_db:
+    driver: local

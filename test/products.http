@@ -1,0 +1,47 @@
+POST http://localhost:8080/api/products/9
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2NDQwNDc1OCwiZXhwIjoxNjY0NDA1NjU4fQ.vkHCVnI3BPDNloDGuvv9NA5vRMQFrb0FKUPbN4JC0Uc
+
+{
+  "name": "Blue Case",
+  "description": "Beautiful Deep Blue Case",
+  "subCategories": [
+    {
+        "id": 14,
+        "name": "Cat #1"
+      }
+  ]
+}
+
+###
+GET http://localhost:8080/api/products/
+
+###
+GET http://localhost:8080/api/products/3
+
+###
+PUT http://localhost:8080/api/products/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2NDQwNDc1OCwiZXhwIjoxNjY0NDA1NjU4fQ.vkHCVnI3BPDNloDGuvv9NA5vRMQFrb0FKUPbN4JC0Uc
+
+{
+    "id": 3,
+    "name": "Blue Case Updated",
+    "description": "Beautiful Deep Blue Case",
+    "imageUrl": null
+  }
+
+###
+DELETE http://localhost:8080/api/products/2
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwibWFpbF9jb25maXJtZWQiOnRydWUsImlhdCI6MTY2NDQwNDc1OCwiZXhwIjoxNjY0NDA1NjU4fQ.vkHCVnI3BPDNloDGuvv9NA5vRMQFrb0FKUPbN4JC0Uc
+
+###
+
+POST http://localhost:8080/api/products/search
+Content-Type: application/json
+
+{
+  "category": {
+    "id": 11
+  }
+}

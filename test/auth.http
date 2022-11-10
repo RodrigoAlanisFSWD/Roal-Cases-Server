@@ -1,0 +1,42 @@
+POST http://localhost:8080/api/auth/sign-up
+Content-Type: application/json
+
+{
+  "name": "Rodrigo",
+  "email": "rodrigoalanisfswd@gmail.com",
+  "password": "123123"
+}
+
+###
+
+POST http://localhost:8080/api/auth/sign-in
+Content-Type: application/json
+
+{
+  "name": "Rodrigo",
+  "email": "rodrigoalanisfswd@gmail.com",
+  "password": "123123"
+}
+
+###
+
+POST http://localhost:8080/api/auth/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwiaWF0IjoxNjYxMTA3NDQ0LCJleHAiOjE2NjExMDgzNDR9._fhCEUYRp09z4bgdwfM66rZCrBXqDfrjoFbiYuymj8g
+
+###
+
+POST http://localhost:8080/api/auth/refresh
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsIjoicm9kcmlnb2FsYW5pc2Zzd2RAZ21haWwuY29tIiwiaWF0IjoxNjYxMTA3NTMyLCJleHAiOjE2NjExMDg0MzJ9.EvJ3BzfNLc4rLY13issM3U-BMagvqlTGLwlnhYk9INU
+
+###
+
+GET http://localhost:8080/api/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsIm1haWxfY29uZmlybWVkIjp0cnVlLCJpYXQiOjE2NjE4OTIzNzgsImV4cCI6MTY2MTg5MzI3OH0.opzOxEtF_8dyI138sh7lkgHiYs9HtNrLmkZ3Fo8nd_s
+
+###
+POST http://localhost:8080/api/auth/send_confirmation
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsIm1haWxfY29uZmlybWVkIjpmYWxzZSwiaWF0IjoxNjYxODkyMjEyLCJleHAiOjE2NjE4OTMxMTJ9.i8OvWxxux-h1VcCte1sXsQREcgJSAjUd-2SRiPRofwc
+
+###
+POST http://localhost:8080/api/auth/confirm_email/FRMw9zzj
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEwMiwiZW1haWwiOiJyb2RyaWdvYWxhbmlzZnN3ZEBnbWFpbC5jb20iLCJyb2xlIjoiVVNFUiIsIm1haWxfY29uZmlybWVkIjpmYWxzZSwiaWF0IjoxNjYxODkyMjEyLCJleHAiOjE2NjE4OTMxMTJ9.i8OvWxxux-h1VcCte1sXsQREcgJSAjUd-2SRiPRofwc
