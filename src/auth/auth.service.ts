@@ -1,9 +1,9 @@
-import {ForbiddenException, Injectable, UnauthorizedException} from '@nestjs/common';
-import {User} from "./user/user.entity";
-import {UserService} from "./user/user.service";
+import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { User } from "./user/user.entity";
+import { UserService } from "./user/user.service";
 import * as bcrypt from 'bcrypt';
-import {Tokens} from "../common/types/auth";
-import {JwtService} from "@nestjs/jwt";
+import { Tokens } from "../common/types/auth";
+import { JwtService } from "@nestjs/jwt";
 import { randomBytes } from 'node:crypto';
 import { MailService } from 'src/mail/mail.service';
 import { ConfigService } from '@nestjs/config';
@@ -13,28 +13,28 @@ import { CartService } from 'src/cart/cart.service';
 export class AuthService {
 
     constructor(
-        private userService: UserService, 
+        private userService: UserService,
         private jwtService: JwtService,
         private mailService: MailService,
         private config: ConfigService,
-        ) {
+    ) {
     }
 
     async signUp(user: User): Promise<Tokens> {
         try {
-        user.password = await this.hashData(user.password);
-        const newUser = await this.userService.saveUser(user)
+            user.password = await this.hashData(user.password);
+            const newUser = await this.userService.saveUser(user)
 
-        const tokens = await this.getTokens(newUser);
+            const tokens = await this.getTokens(newUser);
 
-        await this.updateRtHash(newUser.id, tokens.refresh_token);
+            await this.updateRtHash(newUser.id, tokens.refresh_token);
 
-        return tokens;
+            return tokens;
         } catch (e) {
             console.log(e)
             throw new ForbiddenException("Register Error")
         }
-        
+
     }
 
     async signIn(user: User): Promise<Tokens> {
@@ -44,7 +44,7 @@ export class AuthService {
 
         const verify = await bcrypt.compare(user.password, findedUser.password)
 
-        if (!verify) throw  new UnauthorizedException("Incorrect Password")
+        if (!verify) throw new UnauthorizedException("Incorrect Password")
 
         const tokens = await this.getTokens(findedUser);
 
@@ -54,21 +54,28 @@ export class AuthService {
     }
 
     async refreshToken(userId: number, rt: string) {
-        const user = await this.userService.findUserById(userId);
+        try {
+            const user = await this.userService.findUserById(userId);
 
-        if (!user) throw new ForbiddenException("Access Denied")
+            console.log(user)
 
-        const verify = await bcrypt.compare(rt, user.hashedRt);
+            if (!user) throw new ForbiddenException("Access Denied")
 
-        if (!verify) throw  new UnauthorizedException("Incorrect Password")
+            const verify = await bcrypt.compare(rt, user.hashedRt);
 
-        const tokens = await this.getTokens(user);
+            if (!verify) throw new UnauthorizedException("Incorrect Password")
 
-        await this.updateRtHash(user.id, tokens.refresh_token);
+            const tokens = await this.getTokens(user);
 
-        console.log("refreshed")
+            await this.updateRtHash(user.id, tokens.refresh_token);
 
-        return tokens;
+            console.log("refreshed")
+
+            return tokens;
+        } catch (error) {
+            console.log(error)
+        }
+
     }
 
     async logout(userId: number) {

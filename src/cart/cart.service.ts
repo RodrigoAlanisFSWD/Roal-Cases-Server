@@ -51,10 +51,25 @@ export class CartService {
         return cart
     }
 
-    async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
-            const user = await this.userService.getUserWithCart(userId)
+    async getCartFromId(id: number): Promise<Cart> {
+        return await this.cartRepo.findOne({
+            where: {
+                id,
+            },
+            relations: {
+                user: true,
+                products: {
+                    product: {
+                        images: true,
+                    },
+                    model: true
+                },
+            }
+        })
+    }
 
-            const cart = user.cart;
+    async addProductToCart(product: CartProduct, userId: number): Promise<Cart> {
+            const cart = await this.getCart(userId);
     
             const localID = `p-${product.product.id}-${product.product.name.split(" ").join("")}-m-${product.model.id}-${product.model.name.split(" ").join("")}` 
             
@@ -65,14 +80,11 @@ export class CartService {
     
                 await this.cartProductRepo.save(exists)
             } else {
-                console.log(product, localID)
                 const newProduct = await this.cartProductRepo.save({
                     ...product,
                     localID
                 })
-    
-                console.log(newProduct) 
-    
+        
                 cart.products.push(newProduct)    
             }
 
@@ -109,6 +121,21 @@ export class CartService {
         await this.cartRepo.save(cart);
 
         return cart
+    }
+
+    async deleteCart(userId: number): Promise<any> {
+        const cart = await this.cartRepo.findOne({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            relations: {
+                user: true
+            }
+        })
+       
+        return await this.cartRepo.delete(cart)
     }
 
 }
