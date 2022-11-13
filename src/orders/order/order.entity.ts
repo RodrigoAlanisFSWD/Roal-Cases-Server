@@ -1,7 +1,8 @@
+import moment from "moment";
 import { User } from "src/auth/user/user.entity";
 import { Model } from "src/models/model.entity";
 import { Product } from "src/products/product/product.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum OrderStatus {
     NEW = "NEW",
@@ -29,6 +30,14 @@ export class Order {
         cascade: true
     })
     products: OrderProduct[];
+
+    @Column({ default: "none" })
+    created_at: string;
+
+    @BeforeInsert()
+    insertCreated() {
+        this.created_at = moment().format("MMM Do YY")
+    }
 }
 
 @Entity()
@@ -50,7 +59,7 @@ export class OrderProduct {
     })
     @JoinColumn()
     product: Product;
-    
+
     @ManyToOne(() => Order, (order) => order.products)
     order: Order
 }

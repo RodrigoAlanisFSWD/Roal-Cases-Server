@@ -135,7 +135,7 @@ export class CartService {
             }
         })
        
-        return await this.cartRepo.delete(cart)
+        return await this.cartRepo.delete(cart.id)
     }
 
 }

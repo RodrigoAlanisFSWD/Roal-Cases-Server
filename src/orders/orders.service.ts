@@ -67,7 +67,12 @@ export class OrdersService {
             },
             relations: {
                 user: true,
-                products: true,
+                products: {
+                    model: true,
+                    product: {
+                        images: true
+                    },
+                }
             }
         })
     }
