@@ -31,13 +31,13 @@ export class CartProduct {
     @Column()
     count: number;
 
-    @OneToOne(() => Model, {
+    @ManyToOne(() => Model, {
         cascade: true
     })
     @JoinColumn()
     model: Model;
 
-    @OneToOne(() => Product, {
+    @ManyToOne(() => Product, {
         cascade: true
     })
     @JoinColumn()

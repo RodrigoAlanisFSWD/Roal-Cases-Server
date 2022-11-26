@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Address } from "src/addresses/address/address.entity";
 import { User } from "src/auth/user/user.entity";
 import { Model } from "src/models/model.entity";
 import { Product } from "src/products/product/product.entity";
@@ -26,6 +27,9 @@ export class Order {
     @ManyToOne(() => User, (user) => user.orders)
     user: User;
 
+    @ManyToOne(() => Address)
+    address: Address;
+
     @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order, {
         cascade: true
     })
@@ -33,11 +37,6 @@ export class Order {
 
     @Column({ default: "none" })
     created_at: string;
-
-    @BeforeInsert()
-    insertCreated() {
-        this.created_at = moment().format("MMM Do YY")
-    }
 }
 
 @Entity()
@@ -48,13 +47,13 @@ export class OrderProduct {
     @Column()
     count: number;
 
-    @OneToOne(() => Model, {
+    @ManyToOne(() => Model, {
         cascade: true
     })
     @JoinColumn()
     model: Model;
 
-    @OneToOne(() => Product, {
+    @ManyToOne(() => Product, {
         cascade: true
     })
     @JoinColumn()

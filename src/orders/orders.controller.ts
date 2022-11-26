@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Address } from 'src/addresses/address/address.entity';
 import { GetCurrentUser } from 'src/common/decorators';
 import { AdminGuard, AtGuard } from 'src/common/guards';
 import { Order } from './order/order.entity';
@@ -14,8 +15,8 @@ export class OrdersController {
     @UseGuards(AtGuard)
     @Post("/")
     @HttpCode(HttpStatus.CREATED)
-    async createOrder(@GetCurrentUser("sub") userId: number): Promise<Order> {
-        return this.ordersService.createOrder(userId)
+    async createOrder(@GetCurrentUser("sub") userId: number, @Body() address: Address): Promise<Order> {
+        return this.ordersService.createOrder(userId, address)
     }
 
     @UseGuards(AtGuard)
