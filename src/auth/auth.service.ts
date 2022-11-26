@@ -57,8 +57,6 @@ export class AuthService {
         try {
             const user = await this.userService.findUserById(userId);
 
-            console.log(user)
-
             if (!user) throw new ForbiddenException("Access Denied")
 
             const verify = await bcrypt.compare(rt, user.hashedRt);

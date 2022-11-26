@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import * as moment from 'moment';
+import { Address } from 'src/addresses/address/address.entity';
 import { UserService } from 'src/auth/user/user.service';
 import { CartProduct } from 'src/cart/cart.entity';
 import { CartService } from 'src/cart/cart.service';
@@ -14,8 +16,9 @@ export class OrdersService {
         private cartService: CartService
     ) { }
 
-    async createOrder(userId: number): Promise<Order> {
-        const cart = await this.cartService.getCart(userId)
+    async createOrder(userId: number, address: Address): Promise<Order> {
+        try {
+            const cart = await this.cartService.getCart(userId)
         const totalPrice = cart.products.reduce((acc: number, cur: CartProduct) => acc += cur.product.price * cur.count, 0) + 75
         const tax = calcTax(totalPrice)
 
@@ -26,6 +29,8 @@ export class OrdersService {
                 id: userId
             },
             products: [],
+            address,
+            created_at: moment().format("MMM Do YY")
         }
 
         cart.products.forEach((product: CartProduct) => {
@@ -38,9 +43,13 @@ export class OrdersService {
             order.products.push(newProduct)
         })
 
-        console.log(order)
+        await this.cartService.resetCart(userId)
 
         return this.orderService.saveOrder(order)
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
     async getOrders(userId: number): Promise<Order[]> {
@@ -72,7 +81,8 @@ export class OrdersService {
                     product: {
                         images: true
                     },
-                }
+                },
+                address: true
             }
         })
     }
