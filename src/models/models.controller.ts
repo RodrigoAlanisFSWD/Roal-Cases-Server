@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { AdminGuard, AtGuard } from 'src/common/guards';
 import { ModelsService } from './models.service';
-import { Brand, Model } from './Model.entity';
+import { Brand, Model } from './model.entity';
 
 @Controller('/api/models')
 export class ModelsController {
