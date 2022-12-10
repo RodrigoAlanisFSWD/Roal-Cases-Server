@@ -2,18 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { ProductService } from "./product/product.service";
 import { Product } from "./product/product.entity";
 import { CategoryService } from '../categories/category/category.service';
-import fs, { existsSync, rm, rmSync } from 'fs';
-import { join, parse } from 'path';
+import { existsSync, rmSync } from 'fs';
+import { join } from 'path';
 import { ProductImage } from './image/image.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ArrayContains, createQueryBuilder, In, Like, Repository } from 'typeorm';
-import { v4 as uid } from 'uuid';
+import { In, Like, Repository } from 'typeorm';
 import { toSlug } from 'src/common/utils/functions';
 import { SearchDTO } from './search';
-import { SubCategory } from 'src/subcategories/subcategory/subcategory.entity';
+import Stripe from 'stripe';
 
 @Injectable()
 export class ProductsService {
+
+    private stripe: Stripe;
 
     constructor(
         private productService: ProductService,
@@ -21,6 +22,9 @@ export class ProductsService {
         @InjectRepository(ProductImage)
         private imageRepo: Repository<ProductImage>,
     ) {
+        this.stripe = new Stripe("sk_test_51LyNkyKPetfkQCPTULboJTU5KLygsDBuZIBUiaS2L1b4qnS8SOwkjiyT3vgjnPMQf8sN7Rpkwp6MOjel5Hph6esi00QxaW0vv7", {
+            apiVersion: "2022-08-01"
+        })
     }
 
     async getProducts(): Promise<Product[]> {
@@ -47,20 +51,58 @@ export class ProductsService {
         product.category = category;
         product.slug = toSlug(product.name)
         product.price = category.price
+
+        const stripeProduct = await this.stripe.products.create({
+            name: product.name,
+            default_price_data: {
+                unit_amount: product.price * 100,
+                currency: "MXN",
+            },
+            expand: ['default_price'],
+        })
+
+        product.stripeId = stripeProduct.id;
+
         const newProduct = await this.productService.saveProduct(product);
 
         return newProduct
     }
 
     async updateProduct(product: Product): Promise<Product> {
+        const oldProduct = await this.productService.getProductById(product.id)
+
         product.slug = toSlug(product.name)
         const updatedProduct = await this.productService.updateProduct(product)
+        
+        const stripeProduct = await this.stripe.products.retrieve(updatedProduct.stripeId)
+
+        if (oldProduct.price !== product.price) {
+            await this.stripe.prices.update(stripeProduct.default_price.toString(), {
+                active: false
+            })
+
+            const price = await this.stripe.prices.create({
+                active: true,
+                unit_amount: product.price * 100,
+                currency: "MXN",
+            })
+
+            await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name, default_price: price.id })
+        } else {
+            await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name })
+        }
 
         return updatedProduct;
     }
 
     async deleteProduct(productId: number): Promise<any> {
-        return this.productService.deleteProduct(productId)
+        const product = await this.productService.getProductById(productId)
+
+        await this.productService.deleteProduct(productId)
+    
+        await this.stripe.products.del(product.stripeId)
+
+        return product 
     }
 
     async uploadProductImage(image: Express.Multer.File, productId: number, type: string): Promise<Product> {
@@ -100,6 +142,8 @@ export class ProductsService {
 
         product.images.push(newImage)
 
+        await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
+
         return this.productService.updateProduct(product);
     }
 
@@ -108,6 +152,9 @@ export class ProductsService {
             where: {
                 id: imageId,
             },
+            relations: {
+                product: true
+            }
         })
 
         const fileName = productImage.imageUrl.split("/files/products/")[1]
@@ -117,6 +164,10 @@ export class ProductsService {
         }
 
         productImage.imageUrl = `http://localhost:8080/files/products/${image.filename}`
+
+        const product = productImage.product;
+
+        await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
 
         return await this.imageRepo.save(productImage)
     }
