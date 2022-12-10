@@ -16,6 +16,6 @@ import { CartModule } from 'src/cart/cart.module';
   imports: [TypeOrmModule.forFeature([User]), PassportModule, JwtModule.register({}), ConfigModule, MailModule],
   controllers: [AuthController],
   providers: [AuthService, AtStrategy, RtStrategy, UserService],
-  exports: [UserService],
+  exports: [UserService, AuthService],
 })
 export class AuthModule {}

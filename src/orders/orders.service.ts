@@ -1,10 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
 import { Address } from 'src/addresses/address/address.entity';
+import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/auth/user/user.service';
 import { CartProduct } from 'src/cart/cart.entity';
 import { CartService } from 'src/cart/cart.service';
 import { calcTax } from 'src/common/utils/functions';
+import { MailService } from 'src/mail/mail.service';
 import { Order, OrderStatus } from './order/order.entity';
 import { OrderService } from './order/order.service';
 
@@ -13,7 +15,9 @@ export class OrdersService {
 
     constructor(
         private orderService: OrderService,
-        private cartService: CartService
+        private cartService: CartService,
+        private mailService: MailService,
+        private authService: AuthService
     ) { }
 
     async createOrder(userId: number, address: Address): Promise<Order> {
@@ -45,7 +49,10 @@ export class OrdersService {
 
         await this.cartService.resetCart(userId)
 
-        return this.orderService.saveOrder(order)
+
+        const newOrder = await this.orderService.saveOrder(order)
+
+        return newOrder
         } catch (error) {
             console.log(error)
         }
