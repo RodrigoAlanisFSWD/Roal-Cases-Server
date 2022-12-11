@@ -52,16 +52,16 @@ export class ProductsService {
         product.slug = toSlug(product.name)
         product.price = category.price
 
-        const stripeProduct = await this.stripe.products.create({
-            name: product.name,
-            default_price_data: {
-                unit_amount: product.price * 100,
-                currency: "MXN",
-            },
-            expand: ['default_price'],
-        })
+        // const stripeProduct = await this.stripe.products.create({
+        //     name: product.name,
+        //     default_price_data: {
+        //         unit_amount: product.price * 100,
+        //         currency: "MXN",
+        //     },
+        //     expand: ['default_price'],
+        // })
 
-        product.stripeId = stripeProduct.id;
+        // product.stripeId = stripeProduct.id;
 
         const newProduct = await this.productService.saveProduct(product);
 
@@ -69,28 +69,28 @@ export class ProductsService {
     }
 
     async updateProduct(product: Product): Promise<Product> {
-        const oldProduct = await this.productService.getProductById(product.id)
+        // const oldProduct = await this.productService.getProductById(product.id)
 
         product.slug = toSlug(product.name)
         const updatedProduct = await this.productService.updateProduct(product)
         
-        const stripeProduct = await this.stripe.products.retrieve(updatedProduct.stripeId)
+        // const stripeProduct = await this.stripe.products.retrieve(updatedProduct.stripeId)
 
-        if (oldProduct.price !== product.price) {
-            await this.stripe.prices.update(stripeProduct.default_price.toString(), {
-                active: false
-            })
+        // if (oldProduct.price !== product.price) {
+        //     await this.stripe.prices.update(stripeProduct.default_price.toString(), {
+        //         active: false
+        //     })
 
-            const price = await this.stripe.prices.create({
-                active: true,
-                unit_amount: product.price * 100,
-                currency: "MXN",
-            })
+        //     const price = await this.stripe.prices.create({
+        //         active: true,
+        //         unit_amount: product.price * 100,
+        //         currency: "MXN",
+        //     })
 
-            await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name, default_price: price.id })
-        } else {
-            await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name })
-        }
+        //     await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name, default_price: price.id })
+        // } else {
+        //     await this.stripe.products.update(updatedProduct.stripeId, { name: updatedProduct.name })
+        // }
 
         return updatedProduct;
     }
@@ -100,7 +100,7 @@ export class ProductsService {
 
         await this.productService.deleteProduct(productId)
     
-        await this.stripe.products.del(product.stripeId)
+        // await this.stripe.products.del(product.stripeId)
 
         return product 
     }
@@ -142,7 +142,7 @@ export class ProductsService {
 
         product.images.push(newImage)
 
-        await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
+        // await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
 
         return this.productService.updateProduct(product);
     }
@@ -167,7 +167,7 @@ export class ProductsService {
 
         const product = productImage.product;
 
-        await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
+        // await this.stripe.products.update(product.stripeId, { images: [product.images.find((image: ProductImage) => image.type === "MAIN").imageUrl] })
 
         return await this.imageRepo.save(productImage)
     }

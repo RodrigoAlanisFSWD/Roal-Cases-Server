@@ -20,7 +20,7 @@ export class OrdersService {
         private authService: AuthService
     ) { }
 
-    async createOrder(userId: number, address: Address): Promise<Order> {
+    async createOrder(userId: number, address: Address, session: string): Promise<Order> {
         try {
             const cart = await this.cartService.getCart(userId)
         const totalPrice = cart.products.reduce((acc: number, cur: CartProduct) => acc += cur.product.price * cur.count, 0) + 75
@@ -34,7 +34,8 @@ export class OrdersService {
             },
             products: [],
             address,
-            created_at: moment().format("MMM Do YY")
+            created_at: moment().format("MMM Do YY"),
+            sessionId: session,
         }
 
         cart.products.forEach((product: CartProduct) => {
@@ -96,6 +97,20 @@ export class OrdersService {
 
     async updateOrder(order: Order): Promise<Order> {
         return this.orderService.saveOrder(order)
+    }
+
+    async getOrderFromSession(session: string, userId: number) {
+        return this.orderService.findOrder({
+            where: {
+                sessionId: session,
+                user: {
+                    id: userId
+                }
+            },
+            relations: {
+                user: true,
+            }
+        })
     }
 
 }

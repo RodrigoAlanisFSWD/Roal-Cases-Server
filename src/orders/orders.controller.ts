@@ -13,10 +13,10 @@ export class OrdersController {
     ) { }
 
     @UseGuards(AtGuard)
-    @Post("/")
+    @Post("/:session")
     @HttpCode(HttpStatus.CREATED)
-    async createOrder(@GetCurrentUser("sub") userId: number, @Body() address: Address): Promise<Order> {
-        return this.ordersService.createOrder(userId, address)
+    async createOrder(@GetCurrentUser("sub") userId: number, @Body() address: Address, @Param("session") session: string): Promise<Order> {
+        return this.ordersService.createOrder(userId, address, session)
     }
 
     @UseGuards(AtGuard)

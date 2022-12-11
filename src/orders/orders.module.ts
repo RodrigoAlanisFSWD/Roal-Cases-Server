@@ -11,6 +11,7 @@ import { AuthModule } from 'src/auth/auth.module';
 @Module({
   imports: [TypeOrmModule.forFeature([Order, OrderProduct]), CartModule, MailModule, AuthModule],
   controllers: [OrdersController],
-  providers: [OrdersService, OrderService]
+  providers: [OrdersService, OrderService],
+  exports: [OrdersService]
 })
 export class OrdersModule {}

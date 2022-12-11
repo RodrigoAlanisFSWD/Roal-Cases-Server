@@ -6,6 +6,7 @@ import { Product } from "src/products/product/product.entity";
 import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum OrderStatus {
+    PAID = "PAID",
     NEW = "NEW",
     CONFIRMED = "CONFIRMED",
     FAILED = "FAILED",
@@ -37,6 +38,9 @@ export class Order {
 
     @Column({ default: "none" })
     created_at: string;
+
+    @Column({ unique: true, nullable: true })
+    sessionId: string;
 }
 
 @Entity()
