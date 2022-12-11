@@ -24,6 +24,26 @@ export class PaymentsService {
         })
     }
 
+    async createPayment(cartId: number): Promise<Stripe.Response<Stripe.PaymentIntent>> {
+        const { products, user } = await this.cartService.getCartFromId(cartId)
+
+        let sumAmount = 75;
+
+        products.forEach(({ count, product }) => {
+            sumAmount = sumAmount + (product.price * count)
+        })
+
+        sumAmount += calcTax(sumAmount)
+
+        const paymentIntent = await this.stripe.paymentIntents.create({
+            amount: sumAmount * 100,
+            currency: "mxn",
+            automatic_payment_methods: { enabled: true }
+        })
+
+        return paymentIntent
+    }
+
     async createSession(id: number): Promise<Stripe.Checkout.Session> {
         const { products, user } = await this.cartService.getCartFromId(id)
 
@@ -34,7 +54,6 @@ export class PaymentsService {
         })
 
         sumAmount += calcTax(sumAmount)
-
         const items = products.reduce((acc: any, cur) => {
             return [...acc, {
                 price_data: {
@@ -55,6 +74,7 @@ export class PaymentsService {
             mode: "payment",
             success_url: 'http://localhost:3000/shopping/after-payment?session_id={CHECKOUT_SESSION_ID}',
             cancel_url: 'http://localhost:3000/shopping/confirmation',
+            submit_type: 'pay',
         })
 
         return session
@@ -68,5 +88,13 @@ export class PaymentsService {
         await this.ordersService.updateOrder(order)
 
         return order;
+    }
+
+    async cancelPayment(session: string, userId: number): Promise<any> {
+        const order = await this.ordersService.getOrderFromSession(session, userId)
+        
+        await this.ordersService.deleteOrder(order)
+
+        return order
     }
 }

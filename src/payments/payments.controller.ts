@@ -17,7 +17,7 @@ export class PaymentsController {
     @HttpCode(HttpStatus.CREATED)
     async createPayment(@Param("cart") id: number): Promise<any> {
 
-        return this.paymentService.createSession(id)
+        return this.paymentService.createPayment(id)
     }
 
     @UseGuards(AtGuard)
@@ -25,6 +25,13 @@ export class PaymentsController {
     @HttpCode(HttpStatus.OK)
     async finishPayment(@GetCurrentUser("sub") userId: number, @Param("session") session: string): Promise<Order> {
         return this.paymentService.finishPayment(session, userId)
+    }
+
+    @UseGuards(AtGuard)
+    @Post("/cancel/:session")
+    @HttpCode(HttpStatus.OK)
+    async cancelPayment(@GetCurrentUser("sub") userId: number, @Param("session") session: string): Promise<Order> {
+        return this.paymentService.cancelPayment(session, userId)
     }
 
 }

@@ -20,44 +20,42 @@ export class OrdersService {
         private authService: AuthService
     ) { }
 
-    async createOrder(userId: number, address: Address, session: string): Promise<Order> {
+    async createOrder(userId: number, address: Address): Promise<Order> {
         try {
             const cart = await this.cartService.getCart(userId)
-        const totalPrice = cart.products.reduce((acc: number, cur: CartProduct) => acc += cur.product.price * cur.count, 0) + 75
-        const tax = calcTax(totalPrice)
+            const totalPrice = cart.products.reduce((acc: number, cur: CartProduct) => acc += cur.product.price * cur.count, 0) + 75
+            const tax = calcTax(totalPrice)
 
-        const order: any = {
-            total: Math.round(totalPrice + tax),
-            status: OrderStatus.NEW,
-            user: {
-                id: userId
-            },
-            products: [],
-            address,
-            created_at: moment().format("MMM Do YY"),
-            sessionId: session,
-        }
-
-        cart.products.forEach((product: CartProduct) => {
-            const newProduct: any = {
-                count: product.count,
-                model: product.model,
-                product: product.product,
+            const order: any = {
+                total: Math.round(totalPrice + tax),
+                status: OrderStatus.PAID,
+                user: {
+                    id: userId
+                },
+                products: [],
+                address,
+                created_at: moment().format("MMM Do YY"),
             }
 
-            order.products.push(newProduct)
-        })
+            cart.products.forEach((product: CartProduct) => {
+                const newProduct: any = {
+                    count: product.count,
+                    model: product.model,
+                    product: product.product,
+                }
 
-        await this.cartService.resetCart(userId)
+                order.products.push(newProduct)
+            })
 
+            await this.cartService.resetCart(userId)
 
-        const newOrder = await this.orderService.saveOrder(order)
+            const newOrder = await this.orderService.saveOrder(order)
 
-        return newOrder
+            return newOrder
         } catch (error) {
             console.log(error)
         }
-        
+
     }
 
     async getOrders(userId: number): Promise<Order[]> {
@@ -111,6 +109,14 @@ export class OrdersService {
                 user: true,
             }
         })
+    }
+
+    async deleteOrder(order: Order): Promise<any> {
+        return this.orderService.deleteOrder(order)
+    }
+
+    async cleanOrders(userId: number): Promise<any> {
+        return this.orderService.cleanOrders(userId)
     }
 
 }

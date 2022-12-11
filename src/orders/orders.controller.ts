@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Address } from 'src/addresses/address/address.entity';
 import { GetCurrentUser } from 'src/common/decorators';
 import { AdminGuard, AtGuard } from 'src/common/guards';
@@ -13,10 +13,10 @@ export class OrdersController {
     ) { }
 
     @UseGuards(AtGuard)
-    @Post("/:session")
+    @Post("/")
     @HttpCode(HttpStatus.CREATED)
-    async createOrder(@GetCurrentUser("sub") userId: number, @Body() address: Address, @Param("session") session: string): Promise<Order> {
-        return this.ordersService.createOrder(userId, address, session)
+    async createOrder(@GetCurrentUser("sub") userId: number, @Body() address: Address): Promise<Order> {
+        return this.ordersService.createOrder(userId, address)
     }
 
     @UseGuards(AtGuard)
@@ -38,6 +38,12 @@ export class OrdersController {
     @HttpCode(HttpStatus.OK)
     async updateOrder(@Body() order: Order): Promise<Order> {
         return this.ordersService.updateOrder(order)
+    }
+
+    @UseGuards(AtGuard)
+    @Delete("/clean")
+    async cleanOrders(@GetCurrentUser("sub") userId: number): Promise<any> {
+        return this.ordersService.cleanOrders(userId)
     }
 
 }
