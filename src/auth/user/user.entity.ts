@@ -1,7 +1,7 @@
 import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from "typeorm";
 import {IsEmail, IsNotEmpty, IsString} from "class-validator";
 import { Cart } from "src/cart/cart.entity";
-import { Address } from "src/addresses/address/address.entity";
+import { Address } from "src/shipping/entities/address/address.entity";
 import { Order } from "src/orders/order/order.entity";
 
 @Entity()

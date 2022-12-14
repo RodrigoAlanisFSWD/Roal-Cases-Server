@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { GetCurrentUser } from 'src/common/decorators';
 import { AtGuard } from 'src/common/guards';
-import { Address } from './address/address.entity';
+import { Address } from '../entities/address/address.entity';
 import { AddressesService } from './addresses.service';
 
 @Controller('/api/addresses')

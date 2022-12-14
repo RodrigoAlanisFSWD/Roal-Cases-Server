@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { Address } from 'src/addresses/address/address.entity';
+import { Address } from 'src/shipping/entities/address/address.entity';
 import { GetCurrentUser } from 'src/common/decorators';
 import { AdminGuard, AtGuard } from 'src/common/guards';
 import { Order } from './order/order.entity';

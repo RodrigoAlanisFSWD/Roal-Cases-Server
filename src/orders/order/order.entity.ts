@@ -1,9 +1,8 @@
-import moment from "moment";
-import { Address } from "src/addresses/address/address.entity";
+import { Address } from "src/shipping/entities/address/address.entity";
 import { User } from "src/auth/user/user.entity";
 import { Model } from "src/models/model.entity";
 import { Product } from "src/products/product/product.entity";
-import { BeforeInsert, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum OrderStatus {
     PAID = "PAID",

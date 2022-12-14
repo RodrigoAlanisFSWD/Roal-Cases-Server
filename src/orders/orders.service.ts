@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import * as moment from 'moment';
-import { Address } from 'src/addresses/address/address.entity';
+import { Address } from 'src/shipping/entities/address/address.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { UserService } from 'src/auth/user/user.service';
 import { CartProduct } from 'src/cart/cart.entity';

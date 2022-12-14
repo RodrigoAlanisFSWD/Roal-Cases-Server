@@ -1,9 +1,7 @@
 import { Controller, Get, HttpCode, HttpStatus, Param, Post, Res, UseGuards } from '@nestjs/common';
-import { Response } from 'express';
 import { GetCurrentUser } from 'src/common/decorators';
 import { AtGuard } from 'src/common/guards';
 import { Order } from 'src/orders/order/order.entity';
-import Stripe from 'stripe';
 import { PaymentsService } from './payments.service';
 
 @Controller('/api/payments')
