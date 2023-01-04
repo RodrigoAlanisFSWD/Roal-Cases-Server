@@ -1,48 +1,56 @@
-import { User } from "src/auth/user/user.entity";
-import { Model } from "src/models/model.entity";
-import { Product } from "src/products/product/product.entity";
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import {User} from 'src/auth/user/user.entity';
+import {Model} from 'src/models/model.entity';
+import {Product} from 'src/products/product/product.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cart {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @OneToOne(() => User, (user) => user.cart)
-    user: User;
+  @OneToOne(() => User, user => user.cart)
+  user: User;
 
-    @Column({ default: 0 })
-    totalCost: number;
+  @Column({default: 0})
+  totalCost: number;
 
-    @OneToMany(() => CartProduct, (product) => product.cart, {
-        cascade: true
-    })
-    products: CartProduct[]
+  @OneToMany(() => CartProduct, product => product.cart, {
+    cascade: true,
+  })
+  products: CartProduct[];
 }
 
 @Entity()
 export class CartProduct {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    localID: string;
+  @Column()
+  localID: string;
 
-    @Column()
-    count: number;
+  @Column()
+  count: number;
 
-    @ManyToOne(() => Model, {
-        cascade: true
-    })
-    @JoinColumn()
-    model: Model;
+  @ManyToOne(() => Model, {
+    cascade: true,
+  })
+  @JoinColumn()
+  model: Model;
 
-    @ManyToOne(() => Product, {
-        cascade: true
-    })
-    @JoinColumn()
-    product: Product;
+  @ManyToOne(() => Product, {
+    cascade: true,
+  })
+  @JoinColumn()
+  product: Product;
 
-    @ManyToOne(() => Cart, (cart) => cart.products)
-    cart: Cart;
+  @ManyToOne(() => Cart, cart => cart.products)
+  cart: Cart;
 }

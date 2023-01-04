@@ -1,28 +1,37 @@
-import { Product } from "src/products/product/product.entity";
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import {Product} from 'src/products/product/product.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-enum DiscountType {
-    FOR_FINAL_PRICE = "FOR_FINAL_PRICE",
-    FOR_PRODUCTS = 'FOR_PRODUCTS'
+export enum DiscountType {
+  FOR_FINAL_PRICE = 'FOR_FINAL_PRICE',
+  FOR_PRODUCTS = 'FOR_PRODUCTS',
 }
 
 @Entity()
 export class Discount {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ unique: true })
-    code: string;
+  @Column({unique: true})
+  code: string;
 
-    @Column()
-    type: DiscountType;
+  @Column()
+  type: DiscountType;
 
-    @Column()
-    expirationDate: Date;
+  @Column()
+  expirationDate: Date;
 
-    @ManyToMany(() => Product, {
-        cascade: true
-    })
-    @JoinTable()
-    products: Product[]
+  @ManyToMany(() => Product, {
+    cascade: true,
+  })
+  @JoinTable()
+  products: Product[];
+
+  @Column()
+  percent: number;
 }

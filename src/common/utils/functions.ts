@@ -7,7 +7,7 @@ export const toSlug = str =>
     .replace(/^-+|-+$/g, '');
 
 export const calcTax = (totalCost: number): number => {
-  const percent = totalCost / 100
+  const percent = totalCost / 100;
 
-  return percent * 3
-}
+  return percent * 3;
+};

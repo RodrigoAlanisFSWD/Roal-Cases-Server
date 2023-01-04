@@ -1,8 +1,7 @@
-import {AuthGuard} from "@nestjs/passport";
+import {AuthGuard} from '@nestjs/passport';
 
 export class AtGuard extends AuthGuard('jwt') {
-    constructor(props) {
-        super(props);
-    }
-
+  constructor(props) {
+    super(props);
+  }
 }
