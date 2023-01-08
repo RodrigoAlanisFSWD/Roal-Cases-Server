@@ -11,7 +11,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {AdminGuard, AtGuard} from 'src/common/guards';
-import {SubCategory} from 'src/subcategories/subcategory/subcategory.entity';
 import {Group} from './group/group.entity';
 import {GroupsService} from './groups.service';
 

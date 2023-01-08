@@ -1,21 +1,23 @@
-import {Injectable} from '@nestjs/common';
-import {In} from 'typeorm';
-import {Group} from '../groups/group/group.entity';
-import {GroupService} from '../groups/group/group.service';
-import {CreateSubCategoriesDTO} from './subcategories.controller';
-import {SubCategory} from './subcategory/subcategory.entity';
-import {SubCategoryService} from './subcategory/subcategory.service';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
+import { GroupService } from '../groups/group/group.service';
+import { CreateSubCategoriesDTO } from './subcategories.controller';
+import { SubCategory } from './subcategory/subcategory.entity';
+import { SubCategoryService } from './subcategory/subcategory.service';
 
 @Injectable()
 export class SubcategoriesService {
   constructor(
     private subCategoryService: SubCategoryService,
     private groupService: GroupService,
-  ) {}
+  ) { }
 
   async deleteSubCategory(subCategoryId: number): Promise<any> {
-    console.log(subCategoryId)
-    return this.subCategoryService.deleteSubCategory(subCategoryId);
+    try {
+      await this.subCategoryService.deleteSubCategory(subCategoryId);
+    } catch (error) {
+     throw new HttpException('Not Delete Accepted', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async updateSubCategory(subCategory: SubCategory): Promise<SubCategory> {

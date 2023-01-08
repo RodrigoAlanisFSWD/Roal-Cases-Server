@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {SubCategory} from 'src/subcategories/subcategory/subcategory.entity';
 import {FindOneOptions, Repository} from 'typeorm';
@@ -38,24 +38,18 @@ export class GroupService {
   }
 
   async deleteGroup(groupId: number) {
-    const group = await this.groupRepo.findOne({
-      where: {
-        id: groupId,
-      },
-      relations: {
-        subCategories: true,
-      },
-    });
-
-    group.subCategories.forEach(async (subCategory: SubCategory) => {
-      await this.subCategoryRepo.delete({
-        id: subCategory.id,
+      const group = await this.groupRepo.findOne({
+        where: {
+          id: groupId,
+        },
+        relations: {
+          subCategories: true,
+        },
       });
-    });
-
-    return this.groupRepo.delete({
-      id: groupId,
-    });
+  
+      await this.groupRepo.delete({
+        id: groupId,
+      });
   }
 
   async updateGroup(group: Group) {

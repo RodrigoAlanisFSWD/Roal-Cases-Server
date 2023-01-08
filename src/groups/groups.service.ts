@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {SubCategory} from 'src/subcategories/subcategory/subcategory.entity';
 import {SubCategoryService} from 'src/subcategories/subcategory/subcategory.service';
 import {Group} from './group/group.entity';
@@ -9,7 +9,11 @@ export class GroupsService {
   constructor(private groupService: GroupService) {}
 
   async deleteGroup(groupId: number): Promise<any> {
-    return this.groupService.deleteGroup(groupId);
+    try {
+      await this.groupService.deleteGroup(groupId);
+    } catch (error) {
+     throw new HttpException('Not Delete Accepted', HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   async updateGroup(group: Group): Promise<Group> {
