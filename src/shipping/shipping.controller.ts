@@ -25,14 +25,12 @@ export class ShippingController {
     return this.shippingService.createShipment(shipment);
   }
 
-  @UseGuards(AtGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/')
   async getShipments(): Promise<Shipment[]> {
     return this.shippingService.getShipments();
   }
 
-  @UseGuards(AtGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/:id')
   async getShipment(@Param('id') id: number): Promise<Shipment> {
