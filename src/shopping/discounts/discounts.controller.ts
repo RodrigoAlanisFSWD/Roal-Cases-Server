@@ -7,6 +7,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import {AdminGuard, AtGuard} from 'src/common/guards';
@@ -24,7 +25,6 @@ export class DiscountsController {
     return this.discountsService.createDiscount(discount);
   }
 
-  @UseGuards(AtGuard)
   @HttpCode(HttpStatus.OK)
   @Get('/')
   async getDiscounts(): Promise<Discount[]> {
@@ -47,12 +47,11 @@ export class DiscountsController {
 
   @UseGuards(AtGuard, AdminGuard)
   @HttpCode(HttpStatus.OK)
-  @Post('/')
+  @Put('/')
   async updateDiscount(@Body() discount: Discount): Promise<Discount> {
     return this.discountsService.updateDiscount(discount);
   }
 
-  @UseGuards(AtGuard)
   @HttpCode(HttpStatus.OK)
   @Get("/code/:code")
   async getDiscountFromCode(@Param("code") code: string): Promise<Discount> {
