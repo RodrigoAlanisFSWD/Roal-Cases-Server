@@ -1,3 +1,4 @@
+import { Review } from 'src/sells/entities/review/review.entity';
 import {SubCategory} from 'src/subcategories/subcategory/subcategory.entity';
 import {
   Column,
@@ -47,4 +48,9 @@ export class Product {
   })
   @JoinTable()
   subCategories: SubCategory[];
+
+  @OneToMany(() => Review, (review) => review.product, {
+    cascade: true
+  })
+  reviews: Review[]
 }

@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  HttpException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -32,18 +33,18 @@ export class AuthService {
       return tokens;
     } catch (e) {
       console.log(e);
-      throw new ForbiddenException('Register Error');
+      throw new HttpException('Register Error', 500);
     }
   }
 
   async signIn(user: User): Promise<Tokens> {
     const findedUser = await this.userService.findUserByEmail(user.email);
 
-    if (!findedUser) throw new ForbiddenException('Access Denied');
+    if (!findedUser) throw new HttpException('Access Denied', 403);
 
     const verify = await bcrypt.compare(user.password, findedUser.password);
 
-    if (!verify) throw new UnauthorizedException('Incorrect Password');
+    if (!verify) throw new HttpException('Incorrect Password', 401);
 
     const tokens = await this.getTokens(findedUser);
 
@@ -56,11 +57,11 @@ export class AuthService {
     try {
       const user = await this.userService.findUserById(userId);
 
-      if (!user) throw new ForbiddenException('Access Denied');
+      if (!user) throw new HttpException('Access Denied', 403);
 
       const verify = await bcrypt.compare(rt, user.hashedRt);
 
-      if (!verify) throw new UnauthorizedException('Incorrect Password');
+      if (!verify) throw new HttpException('Incorrect Password', 401);
 
       const tokens = await this.getTokens(user);
 
@@ -92,7 +93,7 @@ export class AuthService {
     const verify = bcrypt.compare(code, user.mail_confirmation_code);
 
     if (!verify) {
-      throw new ForbiddenException('Email Code Are Invalid');
+      throw new HttpException('Email Code Are Invalid', 403);
     }
 
     user.mail_confirmed = true;
@@ -175,8 +176,6 @@ export class AuthService {
 
   async sendEmailConfirmation(user: User) {
     const code = this.makeCode(6);
-
-    console.log(code);
 
     user.mail_confirmation_code = await this.hashData(code);
 

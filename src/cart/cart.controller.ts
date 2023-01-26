@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {GetCurrentUser} from 'src/common/decorators';
-import {AtGuard} from 'src/common/guards';
+import {AtGuard, MailGuard} from 'src/common/guards';
 import {Product} from 'src/products/product/product.entity';
 import {Cart, CartProduct} from './cart.entity';
 import {CartService} from './cart.service';
@@ -34,7 +34,7 @@ export class CartController {
     return this.cartService.createCart(userId);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Post('/add')
   @HttpCode(HttpStatus.CREATED)
   addProduct(
@@ -44,7 +44,7 @@ export class CartController {
     return this.cartService.addProductToCart(product, userId);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Delete('/:id')
   @HttpCode(HttpStatus.CREATED)
   removeProduct(
@@ -54,7 +54,7 @@ export class CartController {
     return this.cartService.removeProductFromCart(id, userId);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Put('/:count')
   @HttpCode(HttpStatus.CREATED)
   editProduct(
@@ -65,7 +65,7 @@ export class CartController {
     return this.cartService.editProductInCart(product, count, userId);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Delete('/all')
   @HttpCode(HttpStatus.OK)
   deleteCart(@GetCurrentUser('sub') userId: number): Promise<any> {

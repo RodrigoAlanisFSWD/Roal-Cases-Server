@@ -27,6 +27,10 @@ import {ShippingModule} from './shipping/shipping.module';
 import {Shipment} from './shipping/entities/shipment/shipment.entity';
 import {ShoppingModule} from './shopping/shopping.module';
 import { Discount } from './shopping/entities/discount/discount.entity';
+import {Review} from './sells/entities/review/review.entity'
+import { SellsModule } from './sells/sells.module';
+import { Sell } from './sells/entities/sell/sell.entity';
+import { OrderReview } from './sells/entities/orderReview/orderReview.entity';
 
 @Module({
   imports: [
@@ -55,7 +59,10 @@ import { Discount } from './shopping/entities/discount/discount.entity';
           Order,
           OrderProduct,
           Shipment,
-          Discount
+          Discount,
+          Review,
+          Sell,
+          OrderReview
         ],
         synchronize: true,
       }),
@@ -83,6 +90,7 @@ import { Discount } from './shopping/entities/discount/discount.entity';
     OrdersModule,
     ShippingModule,
     ShoppingModule,
+    SellsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

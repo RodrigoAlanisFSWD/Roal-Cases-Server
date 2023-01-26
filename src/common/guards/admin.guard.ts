@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  HttpException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -14,11 +15,11 @@ export class AdminGuard extends AuthGuard('jwt') {
     const req = context.switchToHttp().getRequest();
 
     if (!req.user) {
-      throw new UnauthorizedException();
+      throw new HttpException('Unaunthorized', 401);
     }
 
     if (req.user.role != 'ADMIN') {
-      throw new UnauthorizedException();
+      throw new HttpException('Unaunthorized', 401);
     }
 
     return super.canActivate(context);

@@ -1,6 +1,7 @@
 import {
   ExecutionContext,
   ForbiddenException,
+  HttpException,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -15,11 +16,11 @@ export class MailGuard extends AuthGuard('jwt') {
     const req = context.switchToHttp().getRequest();
 
     if (!req.user) {
-      throw new UnauthorizedException();
+      throw new HttpException('Unaunthorized', 401)
     }
 
     if (!req.user.mail_confirmed) {
-      throw new ForbiddenException();
+      throw new HttpException('Email Not Confirmed', 403);
     }
 
     return super.canActivate(context);

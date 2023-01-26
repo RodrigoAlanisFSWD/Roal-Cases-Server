@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import {Address} from 'src/shipping/entities/address/address.entity';
 import {GetCurrentUser} from 'src/common/decorators';
-import {AdminGuard, AtGuard} from 'src/common/guards';
+import {AdminGuard, AtGuard, MailGuard} from 'src/common/guards';
 import {Order} from './order/order.entity';
 import {OrdersService} from './orders.service';
 
@@ -20,7 +20,7 @@ import {OrdersService} from './orders.service';
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Post('/')
   @HttpCode(HttpStatus.CREATED)
   async createOrder(
@@ -37,7 +37,7 @@ export class OrdersController {
     return this.ordersService.getOrders(userId);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Get('/:id')
   @HttpCode(HttpStatus.OK)
   async getOrder(
@@ -54,7 +54,7 @@ export class OrdersController {
     return this.ordersService.updateOrder(order);
   }
 
-  @UseGuards(AtGuard)
+  @UseGuards(AtGuard, MailGuard)
   @Delete('/clean')
   async cleanOrders(@GetCurrentUser('sub') userId: number): Promise<any> {
     return this.ordersService.cleanOrders(userId);

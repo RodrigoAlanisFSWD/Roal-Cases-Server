@@ -10,6 +10,8 @@ import {IsEmail, IsNotEmpty, IsString} from 'class-validator';
 import {Cart} from 'src/cart/cart.entity';
 import {Address} from 'src/shipping/entities/address/address.entity';
 import {Order} from 'src/orders/order/order.entity';
+import { Review } from 'src/sells/entities/review/review.entity';
+import { Sell } from 'src/sells/entities/sell/sell.entity';
 
 @Entity()
 export class User {
@@ -54,4 +56,7 @@ export class User {
 
   @OneToMany(() => Order, order => order.user)
   orders: Order[];
+
+  @OneToMany(() => Sell, (sell) => sell.user)
+  sells: Sell[]
 }

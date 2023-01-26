@@ -1,10 +1,10 @@
 import {Injectable} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
-import {AuthService} from 'src/auth/auth.service';
 import {CartProduct} from 'src/cart/cart.entity';
 import {CartService} from 'src/cart/cart.service';
-import {MailService} from 'src/mail/mail.service';
-import {Order, OrderStatus} from './order/order.entity';
+import { Repository } from 'typeorm';
+import {Order, OrderProduct, OrderStatus} from './order/order.entity';
 import {OrderService} from './order/order.service';
 
 @Injectable()
@@ -12,6 +12,8 @@ export class OrdersService {
   constructor(
     private orderService: OrderService,
     private cartService: CartService,
+    @InjectRepository(OrderProduct)
+    private orderProductRepo: Repository<OrderProduct>
   ) {}
 
   async createOrder(userId: number, orderData: Order): Promise<Order> {
@@ -99,6 +101,9 @@ export class OrdersService {
   }
 
   async deleteOrder(order: Order): Promise<any> {
+    order.products.forEach(async (product: OrderProduct) => {
+      await this.orderProductRepo.delete(product.id)
+    })
     return this.orderService.deleteOrder(order);
   }
 
