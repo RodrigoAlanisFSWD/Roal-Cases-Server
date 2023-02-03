@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import * as moment from 'moment';
 import {CartProduct} from 'src/cart/cart.entity';
 import {CartService} from 'src/cart/cart.service';
+import { MailService } from 'src/mail/mail.service';
 import { Repository } from 'typeorm';
 import {Order, OrderProduct, OrderStatus} from './order/order.entity';
 import {OrderService} from './order/order.service';
@@ -13,8 +14,37 @@ export class OrdersService {
     private orderService: OrderService,
     private cartService: CartService,
     @InjectRepository(OrderProduct)
-    private orderProductRepo: Repository<OrderProduct>
+    private orderProductRepo: Repository<OrderProduct>,
+    private mailService: MailService,
   ) {}
+
+  async sendOrderUpdate(orderID: number): Promise<Order> {
+    try {
+      const order = await this.orderService.findOrder({
+        where: {
+          id: orderID
+        },
+        relations: {
+          address: true,
+          discount: true,
+          products: {
+            product: {
+              images: true,
+            }
+          },
+          shipment: true,
+          user: true
+        }
+      })
+      await this.mailService.sendOrderConfirmation(order, order.user)
+
+      return order;
+      
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
 
   async createOrder(userId: number, orderData: Order): Promise<Order> {
     try {
@@ -52,6 +82,8 @@ export class OrdersService {
       await this.cartService.resetCart(userId);
 
       const newOrder = await this.orderService.saveOrder(order);
+
+      await this.mailService.sendOrderConfirmation(newOrder, cart.user)
 
       return newOrder;
     } catch (error) {

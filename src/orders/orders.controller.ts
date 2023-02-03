@@ -59,4 +59,10 @@ export class OrdersController {
   async cleanOrders(@GetCurrentUser('sub') userId: number): Promise<any> {
     return this.ordersService.cleanOrders(userId);
   }
+
+  @UseGuards(AtGuard, MailGuard)
+  @Post("/sendUpdate/:orderId")
+  async sendOrderUpdate(@Param("orderId") orderId: number): Promise<Order> {
+    return this.ordersService.sendOrderUpdate(orderId)
+  }
 }

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <meta name="color-scheme" content="light">
+<meta name="supported-color-schemes" content="light">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            max-width: 700px;
+            margin: 0 auto;
+            font-family: 'Roboto', sans-serif;
+            background-color: white !important;
+            color: black !important;
+        }
+
+        .wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 25px;
+        }
+
+        .wrapper__header {
+            width: 100%;
+            height: 225px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid black;
+        }
+
+        .wrapper__header>h1 {
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .wrapper__header>h3 {
+            font-weight: 400;
+        }
+
+        .wrapper__content {
+            width: 100%;
+            margin-top: 50px;
+        }
+
+        .wrapper__content>p {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .wrapper__content>div {
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .wrapper__content>a {
+            list-style: none;
+            text-decoration: none;
+            color: white !important;
+        }
+
+        .wrapper__content>a div {
+            width: 250px;
+            height: 45px;
+            background-color: #89A3C6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2px;
+            margin-top: 50px;
+        }
+
+        .products {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .products__product {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 1px solid black;
+            padding: 15px 0px;
+            font-size: 18px;
+        }
+
+        .products__product div {
+            margin-top: 0;
+        }
+
+        .products__product div h3 {
+            margin-bottom: 15px;
+        }
+
+        .prices {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .prices__price {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .prices__price--total {
+            border-top: 1px solid black;
+            padding-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="wrapper__header">
+            <h1>
+                ROAL CASES
+            </h1>
+            <h3>
+                Hola {{name}}!
+            </h3>
+        </header>
+        <div class="wrapper__content">
+            <p>
+                Este correo electronico tiene el objetivo de informarte que tu compra a sido completada exitosamente.
+            </p>
+            <p>
+                Productos:
+            </p>
+            <div class="products">
+                {{#each products}}
+                <div class="products__product">
+                    <div>
+                        <h3>
+                            {{name}}
+                        </h3>
+                        <p>
+                            Cantidad: {{count}}
+                        </p>
+                    </div>
+                    <p>
+                        ${{price}}
+                    </p>
+                </div>
+                {{/each}}
+            </div>
+            <div class="prices">
+                <div class="prices__price ">
+                    <span>
+                        Precio:
+                    </span>
+                    {{#if order.discount}}
+                    <span>
+                        - %{{ order.discount.percent }} 
+                        ${{ price }}
+                    </span>
+                    {{/if}}
+                    {{#unless order.discount}}
+                    <span>
+                        ${{order.total}}
+                    </span>
+                    {{/unless}}
+                </div>
+                <div class="prices__price ">
+                    <span>
+                        Envio:
+                    </span>
+                    <span>
+                        ${{order.shipment.price}}
+                    </span>
+                </div>
+                <div class="prices__price prices__price--total">
+                    <span>
+                        Total:
+                    </span>
+
+                    <span>
+                        ${{order.total}}
+                    </span>
+                </div>
+            </div>
+            <p>
+                Se te dara seguimiento del estado de tu pedido a tu correo electronico. Gracias por tu atencion.
+            </p>
+
+            <a href="localhost:8080/">
+                <div>
+                    Ir a Roal Cases
+                </div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

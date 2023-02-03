@@ -5,3 +5,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsImVtYWlsI
 {
     "id": 2
 }
+
+###
+
+POST http://localhost:8080/api/orders/sendUpdate/86
