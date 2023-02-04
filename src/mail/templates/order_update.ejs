@@ -135,56 +135,70 @@
                 ROAL CASES
             </h1>
             <h3>
-                Hola {{name}}!
+                Hola <%= name %>!
             </h3>
         </header>
         <div class="wrapper__content">
-            <p>
-                Este correo electronico tiene el objetivo de informarte que tu compra a sido completada exitosamente.
+            <% if (order.status == 'CONFIRMED') {%>
+                <p>
+                Te informamos que tu orden a sido confirmada y empezara a ser preparada para su futura entrega.
             </p>
+            <% } %>
+
+            <% if (order.status == 'DELIVERED') {%>
+                <p>
+                    Te informamos que tu orden a sido enviada a la direccion seleccionada, te enviaremos la informacion de seguimiento estara disponible en la aplicacion en las siguientes horas.
+                </p>
+            <% } %>
+
+            <% if (order.status == 'FINISHED') {%>
+                <p>
+                    Te informamos que tu orden finalizo exsitosamente, te damos las gracias por tu compra y por la confianza. 
+                </p>
+            <% } %>
+            
             <p>
                 Productos:
             </p>
             <div class="products">
-                {{#each products}}
-                <div class="products__product">
-                    <div>
-                        <h3>
-                            {{name}}
-                        </h3>
+                <% products.forEach(product => { %>
+                    <div class="products__product">
+                        <div>
+                            <h3>
+                                <%= product.name %>
+                            </h3>
+                            <p>
+                                Cantidad: <%= product.count %> 
+                            </p>
+                        </div>
                         <p>
-                            Cantidad: {{count}}
+                            $<%= product.price %> 
                         </p>
                     </div>
-                    <p>
-                        ${{price}}
-                    </p>
-                </div>
-                {{/each}}
+                <% }) %>
             </div>
             <div class="prices">
                 <div class="prices__price ">
                     <span>
                         Precio:
                     </span>
-                    {{#if order.discount}}
+                    <% if (order.discount) { %>
                     <span>
-                        - %{{ order.discount.percent }} 
-                        ${{ price }}
+                        - %<%= order.discount.percent %> 
+                        $<%= price %>
                     </span>
-                    {{/if}}
-                    {{#unless order.discount}}
+                    <% } else { %>
                     <span>
-                        ${{order.total}}
+                        $<%= order.total %>
                     </span>
-                    {{/unless}}
+                    <% } %>
                 </div>
                 <div class="prices__price ">
                     <span>
                         Envio:
                     </span>
                     <span>
-                        ${{order.shipment.price}}
+                        $<%= order.shipment.price %>
                     </span>
                 </div>
                 <div class="prices__price prices__price--total">
@@ -193,13 +207,22 @@
                     </span>
 
                     <span>
-                        ${{order.total}}
+                        $<%= order.total %>
                     </span>
                 </div>
             </div>
-            <p>
+            <% if (order.status == 'FINISHED') { %>
+                <p>
+                    Tu pedido a finalizado y ya no se dara seguimiento a este. Gracias por tu atencion. Si presentaste algun problema con tu orden porfavor comunicate con nosotros desde nuestra aplicacion en el apartado Contacto.
+                </p>
+            <% } %>
+
+            <% if (order.status != 'FINISHED') { %>
+                <p>
                 Se te dara seguimiento del estado de tu pedido a tu correo electronico. Gracias por tu atencion.
             </p>
+            <% } %>
+            
 
             <a href="localhost:8080/">
                 <div>

@@ -61,8 +61,8 @@ export class OrdersController {
   }
 
   @UseGuards(AtGuard, MailGuard)
-  @Post("/sendUpdate/:orderId")
-  async sendOrderUpdate(@Param("orderId") orderId: number): Promise<Order> {
-    return this.ordersService.sendOrderUpdate(orderId)
+  @Post('/setUrl')
+  async setShipmentUrl(@Body() order: Order): Promise<Order> {
+    return this.ordersService.setShipmentUrl(order)
   }
 }

@@ -129,6 +129,27 @@ export class OrdersService {
   }
 
   async updateOrder(order: Order): Promise<Order> {
+    const data = await this.orderService.findOrder({
+      where: {
+        id: order.id
+      },
+      relations: {
+        address: true,
+        discount: true,
+        products: {
+          product: {
+            images: true,
+          }
+        },
+        shipment: true,
+        user: true
+      }
+    })
+    await this.mailService.sendOrderUpdate({
+      ...data,
+      status: order.status
+    })
+
     return this.orderService.saveOrder(order);
   }
 
@@ -141,5 +162,9 @@ export class OrdersService {
 
   async cleanOrders(userId: number): Promise<any> {
     return this.orderService.cleanOrders(userId);
+  }
+
+  async setShipmentUrl(order: Order): Promise<Order> {
+    return this.orderService.saveOrder(order)
   }
 }

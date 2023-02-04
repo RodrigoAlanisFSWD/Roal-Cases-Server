@@ -33,6 +33,9 @@ export class Order {
   @Column()
   status: OrderStatus;
 
+  @Column({ nullable: true })
+  shipmentUrl: string;
+
   @ManyToOne(() => User, user => user.orders)
   user: User;
 
