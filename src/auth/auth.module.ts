@@ -9,6 +9,7 @@ import {JwtModule} from '@nestjs/jwt';
 import {ConfigModule} from '@nestjs/config';
 import {AtStrategy, RtStrategy} from './strategies';
 import {MailModule} from 'src/mail/mail.module';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
   imports: [

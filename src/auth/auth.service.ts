@@ -11,6 +11,7 @@ import {Tokens} from '../common/types/auth';
 import {JwtService} from '@nestjs/jwt';
 import {MailService} from 'src/mail/mail.service';
 import {ConfigService} from '@nestjs/config';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class AuthService {
