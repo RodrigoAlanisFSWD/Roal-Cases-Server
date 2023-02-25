@@ -23,8 +23,8 @@ export class Discount {
   @Column()
   type: DiscountType;
 
-  @Column({ default: 'none' })
-  expirationDate: string;
+  @Column({ default: new Date() })
+  expirationDate: Date;
 
   @ManyToMany(() => Product, {
     cascade: true,

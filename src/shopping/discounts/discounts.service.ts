@@ -1,4 +1,4 @@
-import {Injectable} from '@nestjs/common';
+import {HttpException, Injectable} from '@nestjs/common';
 import { Cart, CartProduct } from 'src/cart/cart.entity';
 import { CartService } from 'src/cart/cart.service';
 import {Discount, DiscountType} from '../entities/discount/discount.entity';
@@ -72,10 +72,16 @@ export class DiscountsService {
   }
 
   async getDiscountFromCode(code: string): Promise<Discount> {
-    return this.discountService.findDiscount({
+    const discount = await this.discountService.findDiscount({
       where: {
         code,
       }
     })
+
+    if (new Date(discount.expirationDate).valueOf() < new Date().valueOf()) {
+      return discount
+    }
+
+    throw new HttpException('Invalid Discount', 404);
   }
 }
