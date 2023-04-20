@@ -78,7 +78,7 @@ export class DiscountsService {
       }
     })
 
-    if (new Date(discount.expirationDate).valueOf() < new Date().valueOf()) {
+    if (new Date(discount.expirationDate).valueOf() > new Date().valueOf()) {
       return discount
     }
 
