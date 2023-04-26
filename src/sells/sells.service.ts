@@ -26,7 +26,6 @@ export class SellsService {
 
         const sell: Sell | any = {
             created_at: date,
-            address: order.address,
             discount: order.discount ? order.discount : null,
             shipment: order.shipment,
             total: order.total,
@@ -68,7 +67,6 @@ export class SellsService {
                 id,
             },
             relations: {
-                address: true,
                 discount: true,
                 review: true,
                 shipment: true,

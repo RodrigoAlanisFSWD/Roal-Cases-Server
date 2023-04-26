@@ -14,11 +14,6 @@ export class Sell {
     @Column()
     total: number;
 
-    @ManyToOne(() => Address, {
-        cascade: true,
-      })
-    address: Address;
-
     @ManyToOne(() => Shipment, {
         cascade: true,
       })
