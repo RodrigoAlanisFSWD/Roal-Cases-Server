@@ -1,38 +1,56 @@
-import { SubCategory } from "src/subcategories/subcategory/subcategory.entity";
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
-import {Category} from "../../categories/category/category.entity";
-import { ProductImage } from "../image/image.entity";
+import { Review } from 'src/sells/entities/review/review.entity';
+import {SubCategory} from 'src/subcategories/subcategory/subcategory.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import {Category} from '../../categories/category/category.entity';
+import {ProductImage} from '../image/image.entity';
 
 @Entity()
 export class Product {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string;
+  @Column({unique: true, nullable: true})
+  stripeId: string;
 
-    @Column({ nullable: true })
-    price: number;
+  @Column()
+  name: string;
 
-    @Column({ nullable: true })
-    slug: string;
+  @Column({nullable: true})
+  price: number;
 
-    @Column()
-    description: string;
+  @Column({nullable: true})
+  slug: string;
 
-    @ManyToOne(() => Category, (category) => category.products, {
-        cascade: true
-    })
-    category: Category;
+  @Column()
+  description: string;
 
-    @OneToMany(() => ProductImage, (image) => image.product, {
-        cascade: true
-    })
-    images: ProductImage[]
+  @ManyToOne(() => Category, category => category.products, {
+    cascade: true,
+  })
+  category: Category;
 
-    @ManyToMany(() => SubCategory, (subCategory) => subCategory.products, {
-        cascade: true
-    })
-    @JoinTable()
-    subCategories: SubCategory[]
+  @OneToMany(() => ProductImage, image => image.product, {
+    cascade: true,
+  })
+  images: ProductImage[];
+
+  @ManyToMany(() => SubCategory, subCategory => subCategory.products, {
+    cascade: true,
+  })
+  @JoinTable()
+  subCategories: SubCategory[];
+
+  @OneToMany(() => Review, (review) => review.product, {
+    cascade: true
+  })
+  reviews: Review[]
 }
