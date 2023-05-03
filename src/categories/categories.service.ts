@@ -76,7 +76,7 @@ export class CategoriesService {
       }
     }
 
-    category.imageUrl = `http://localhost:8080/files/categories/${category.id}${ext}`;
+    category.imageUrl = `https://roal-cases.vercel.app/files/categories/${category.id}${ext}`;
 
     return this.categoryService.saveCategory(category);
   }

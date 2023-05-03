@@ -144,7 +144,7 @@ export class ProductsService {
       type,
     });
 
-    productImage.imageUrl = `http://localhost:8080/files/products/${image.filename}`;
+    productImage.imageUrl = `https://roal-cases.vercel.app/files/products/${image.filename}`;
 
     const newImage = await this.imageRepo.save(productImage);
 
@@ -174,7 +174,7 @@ export class ProductsService {
       rmSync(path);
     }
 
-    productImage.imageUrl = `http://localhost:8080/files/products/${image.filename}`;
+    productImage.imageUrl = `https://roal-cases.vercel.app/files/products/${image.filename}`;
 
     const product = productImage.product;
 
