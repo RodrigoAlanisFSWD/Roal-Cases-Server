@@ -38,5 +38,5 @@ lerna-debug.log*
 
 /mail-templates
 /mail-templates/*
-/public
-/public/*
+/public/img/categories/*
+/public/img/products/*

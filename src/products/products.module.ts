@@ -7,6 +7,7 @@ import {TypeOrmModule} from '@nestjs/typeorm';
 import {Product} from './product/product.entity';
 import {CategoriesModule} from 'src/categories/categories.module';
 import {ProductImage} from './image/image.entity';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import {ProductImage} from './image/image.entity';
       dest: './public/img',
     }),
     CategoriesModule,
+    ConfigModule,
   ],
   providers: [ProductsService, ProductService],
   controllers: [ProductsController],

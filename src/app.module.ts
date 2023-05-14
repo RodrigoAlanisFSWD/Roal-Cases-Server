@@ -80,6 +80,11 @@ import { OrderReview } from './sells/entities/orderReview/orderReview.entity';
       serveRoot: '/files/products',
       exclude: ['/api*'],
     }),
+    ServeStaticModule.forRoot({
+      rootPath: './public/img/defaults',
+      serveRoot: '/files/defaults',
+      exclude: ['/api*']
+    }),
     MailModule,
     CategoriesModule,
     SubcategoriesModule,
