@@ -10,6 +10,7 @@ import {In, Like, Repository} from 'typeorm';
 import {toSlug} from 'src/common/utils/functions';
 import {SearchDTO} from './search';
 import Stripe from 'stripe';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProductsService {
@@ -20,9 +21,10 @@ export class ProductsService {
     private categoryService: CategoryService,
     @InjectRepository(ProductImage)
     private imageRepo: Repository<ProductImage>,
+    private configService: ConfigService
   ) {
     this.stripe = new Stripe(
-      'sk_test_51LyNkyKPetfkQCPTULboJTU5KLygsDBuZIBUiaS2L1b4qnS8SOwkjiyT3vgjnPMQf8sN7Rpkwp6MOjel5Hph6esi00QxaW0vv7',
+      this.configService.get("STRIPE_SK"),
       {
         apiVersion: '2022-08-01',
       },
@@ -144,7 +146,7 @@ export class ProductsService {
       type,
     });
 
-    productImage.imageUrl = `https://roal-cases.vercel.app/files/products/${image.filename}`;
+    productImage.imageUrl = `/files/products/${image.filename}`;
 
     const newImage = await this.imageRepo.save(productImage);
 
@@ -174,7 +176,7 @@ export class ProductsService {
       rmSync(path);
     }
 
-    productImage.imageUrl = `https://roal-cases.vercel.app/files/products/${image.filename}`;
+    productImage.imageUrl = `/files/products/${image.filename}`;
 
     const product = productImage.product;
 
